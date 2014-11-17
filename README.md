@@ -1,6 +1,6 @@
 # Language Detector
 
-This golang library provides functionality to analyze and recognize text.  
+This golang library provides functionality to analyze and recognize language based on a text.  
 
 
 The implementation is based on the following paper:  
