@@ -7,7 +7,7 @@ import (
 	"unicode/utf8"
 )
 
-func analyze(text, name string) Language {
+func Analyze(text, name string) Language {
 	theMap := createOccurenceMap(text, nDepth)
 	ranked := createRankLookupMap(theMap)
 	return Language{Name: name, Profile: ranked}

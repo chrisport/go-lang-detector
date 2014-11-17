@@ -38,7 +38,7 @@ func (this *Detector) AddLanguage(textToAnalyze, languageName string) {
 		newSlice := make([]Language, 0, 0)
 		this.Languages = &newSlice
 	}
-	analyzedLanguage := analyze(textToAnalyze, languageName)
+	analyzedLanguage := Analyze(textToAnalyze, languageName)
 	updatedList := append(*this.Languages, analyzedLanguage)
 	*this.Languages = updatedList
 }

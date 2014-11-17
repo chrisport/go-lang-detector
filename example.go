@@ -26,7 +26,7 @@ func main() {
 		WriteToFile(bytes, "analyzed.json")
 	*/
 	detector := langdet.NewDefaultDetector()
-	testString := GetTextFromFile("example.txt")
+	testString := GetTextFromFile("example_input.txt")
 	result := detector.GetClosestLanguage(testString)
 	fmt.Println(result)
 }
