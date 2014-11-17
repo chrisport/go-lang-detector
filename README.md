@@ -1,6 +1,6 @@
 # Language Detector
 
-This golang library provides functionality to analyze and recognize language based on a text.  
+This golang library provides functionality to analyze and recognize language based on text.  
 
 
 The implementation is based on the following paper:  
@@ -19,13 +19,13 @@ The default detector supports the following languages:
 **Arabic, English, French, German, Hebrew, Russian, Turkish**
 
 ``` go
-    detector := langdet.NewDefaultDetector()
-	testString := GetTextFromFile("example_input.txt")
+    	detector := langdet.NewDefaultDetector()
+	testString := "do not care about quantity"
 	result := detector.GetClosestLanguage(testString)
 	fmt.Println(result)
 
 output:
-    'english'
+    english
 ```
 
 ### Analyze
@@ -33,9 +33,9 @@ The result will be a Language object, containing the specified name and the prof
 example:
 
 ``` go
-    language := langdet.Analyze(text_sample,"french")
-    language.Profile // the profile
-    language.Name // the name
+    language := langdet.Analyze(text_sample, "french")
+    language.Profile // language profile in form of map[string]int as defined above
+    language.Name // the name that was given as parameter
 ```
 
 ### Add more languages
