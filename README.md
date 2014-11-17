@@ -1,13 +1,15 @@
 # Language Detector
 
 This golang library provides functionality to analyze and recognize text.  
+
+
 The implementation is based on the following paper:  
 N-Gram-Based Text Categorization  
 William B. Cavnar and John M. Trenkle  
 Environmental Research Institute of Michigan P.O. Box 134001  
 Ann Arbor MI 48113-4001
 
-**Def. Language profile**
+### Language profile
 A language profile is a ```map[string] int```that maps n-gram tokens to its occurrency-rank. So for the most
 frequent token 'X' of the analyzed text, map['X'] will be 1.
 
