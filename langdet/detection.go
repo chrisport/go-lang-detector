@@ -70,15 +70,20 @@ func getDistance(mapA, mapB map[string]int) int {
 		if rankA > 300 {
 			continue
 		}
+		var diff int
 		if rankB, ok := mapB[key]; ok {
-			diff := rankB - rankA
-			if diff < 0 {
+			diff = rankB - rankA
+
+			if diff > 300 || diff < -300 {
+				diff = 300
+			} else if diff < 0 {
 				diff = diff * (-1)
 			}
-			result += diff
 		} else {
-			result += 300
+			diff = 300
 		}
+		result += diff
+
 	}
 	return result
 }

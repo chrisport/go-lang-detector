@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/chrisport/go-lang-detector/langdet"
 	"io/ioutil"
@@ -13,22 +14,23 @@ Arabic, English, French, German, Hebrew, Russian, Turkish
 */
 func main() {
 
-	/*
-		// Analyze different languages from files and and write to analyzed.json:
-		detector.AddLanguage(GetTextFromFile("samples/english.txt"), "english")
-		detector.AddLanguage(GetTextFromFile("samples/german.txt"), "german")
-		detector.AddLanguage(GetTextFromFile("samples/french.txt"), "french")
-		detector.AddLanguage(GetTextFromFile("samples/turkish.txt"), "turkish")
-		detector.AddLanguage(GetTextFromFile("samples/arabic"), "arabic")
-		detector.AddLanguage(GetTextFromFile("samples/hebrew"), "hebrew")
-		detector.AddLanguage(GetTextFromFile("samples/russian"), "russian")
-		bytes, _ := json.Marshal(*detector.Languages)
-		WriteToFile(bytes, "analyzed.json")
-	*/
-	detector := langdet.NewDefaultDetector()
+	detector := langdet.Detector{}
+	// Analyze different languages from files and and write to analyzed.json:
+	detector.AddLanguage(GetTextFromFile("samples/english.txt"), "english")
+	detector.AddLanguage(GetTextFromFile("samples/german.txt"), "german")
+	detector.AddLanguage(GetTextFromFile("samples/french.txt"), "french")
+	detector.AddLanguage(GetTextFromFile("samples/turkish.txt"), "turkish")
+	detector.AddLanguage(GetTextFromFile("samples/arabic"), "arabic")
+	detector.AddLanguage(GetTextFromFile("samples/hebrew"), "hebrew")
+	detector.AddLanguage(GetTextFromFile("samples/russian"), "russian")
+	bytes, _ := json.Marshal(*detector.Languages)
+	WriteToFile(bytes, "analyzed.json")
+
+	//detector := langdet.NewDefaultDetector()
 	testString := GetTextFromFile("example_input.txt")
 	result := detector.GetClosestLanguage(testString)
 	fmt.Println(result)
+
 }
 
 func GetTextFromFile(fileName string) string {

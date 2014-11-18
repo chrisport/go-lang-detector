@@ -66,7 +66,6 @@ func createPadding(length int) string {
 	}
 	return buffer.String()
 }
-
 func cleanText(text string) string {
 	text = strings.Replace(text, "\n", " ", -1)
 	text = strings.Replace(text, ",", " ", -1)

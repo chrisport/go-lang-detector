@@ -29,7 +29,7 @@ output:
 The result will be a Language object, containing the specified name and the profile
 example:
 
-```
+``` 
     language := langdet.Analyze(text_sample,"french")
     language.Profile // the profile
     language.Name // the name
