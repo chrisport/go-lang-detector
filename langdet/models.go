@@ -17,13 +17,13 @@ type Language struct {
 }
 
 type DetectionResult struct {
-	Name       string
-	Distance   int
-	Confidence int
+	Name             string
+	RelativeDistance int
+	Confidence       int
 }
 
-type ResByDist []DetectionResult
+type ResByConf []DetectionResult
 
-func (a ResByDist) Len() int           { return len(a) }
-func (a ResByDist) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ResByDist) Less(i, j int) bool { return a[i].Distance < a[j].Distance }
+func (a ResByConf) Len() int           { return len(a) }
+func (a ResByConf) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
+func (a ResByConf) Less(i, j int) bool { return a[i].Confidence > a[j].Confidence }

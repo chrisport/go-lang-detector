@@ -7,6 +7,8 @@ import (
 	"unicode/utf8"
 )
 
+var maxSampleSize = -1
+
 func Analyze(text, name string) Language {
 	theMap := createOccurenceMap(text, nDepth)
 	ranked := createRankLookupMap(theMap)
@@ -23,7 +25,11 @@ func createRankLookupMap(input map[string]int) map[string]int {
 	sort.Sort(ByOccurrence(tokens))
 	result := make(map[string]int)
 	length := len(tokens)
-	for i := length - 1; i >= 0 && i > length-601; i-- {
+	locMaxL := maxSampleSize
+	if locMaxL < 0 {
+		locMaxL = length
+	}
+	for i := length - 1; i >= 0 && i > length-locMaxL; i-- {
 		result[tokens[i].Key] = length - i
 	}
 	return result

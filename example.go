@@ -47,8 +47,8 @@ func GetTextFromFile(fileName string) string {
 	return string(text)
 }
 
-func WriteToFile(content []byte, name string) {
-	err := ioutil.WriteFile(name+"out.txt", content, os.ModePerm)
+func WriteToFile(content []byte, fileName string) {
+	err := ioutil.WriteFile(fileName, content, os.ModePerm)
 	if err != nil {
 		panic(err)
 	}

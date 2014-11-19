@@ -7,9 +7,10 @@ import (
 	"sort"
 )
 
-const nDepth = 3
+const nDepth = 4
 
-var MaxDistanceInPercentage float64 = 0.7
+// MinimumConfidence is the minimum confidence that a language-match must have to be returned as detected language
+var MinimumConfidence float32 = 0.7
 
 var defaultLanguages []Language
 
@@ -51,13 +52,10 @@ func (this *Detector) GetClosestLanguage(text string) string {
 	lookupMap := createRankLookupMap(occurrenceMap)
 	results := this.closestFromTable(lookupMap)
 
-	maxPossibleDistance := len(lookupMap) * 300
-	maxAllowedDistance := int(MaxDistanceInPercentage * float64(maxPossibleDistance))
-
-	if results[0].Distance < maxAllowedDistance {
-		return results[0].Name
+	if results[0].Confidence < asPercent(MinimumConfidence) {
+		return "undefined"
 	}
-	return "undefined"
+	return results[0].Name
 }
 
 func (this *Detector) GetLanguages(text string) []DetectionResult {
@@ -69,20 +67,28 @@ func (this *Detector) GetLanguages(text string) []DetectionResult {
 
 func (this *Detector) closestFromTable(lookupMap map[string]int) []DetectionResult {
 	results := []DetectionResult{}
-	maxPossibleDistance := len(lookupMap) * 300
+	inputSize := len(lookupMap)
+	if inputSize > 300 {
+		inputSize = 300
+	}
 	for _, language := range *this.Languages {
-		dist := getDistance(lookupMap, language.Profile)
+		lSize := len(language.Profile)
+		maxPossibleDistance := lSize * inputSize
+		dist := getDistance(lookupMap, language.Profile, lSize)
 		relativeDistance := 1 - float64(dist)/float64(maxPossibleDistance)
 		confidence := int(relativeDistance * 100)
-		results = append(results, DetectionResult{Name: language.Name, Distance: dist, Confidence: confidence})
+		results = append(results, DetectionResult{Name: language.Name, Confidence: confidence})
 	}
 
-	sort.Sort(ResByDist(results))
+	sort.Sort(ResByConf(results))
 	return results
 }
 
-func getDistance(mapA, mapB map[string]int) int {
+// getDistance calculates the out-of-place distance between two Profiles,
+// taking into account only items of mapA, that have a value bigger then 300
+func getDistance(mapA, mapB map[string]int, maxDist int) int {
 	var result int
+	negMaxDist := ((-1) * maxDist)
 	for key, rankA := range mapA {
 		if rankA > 300 {
 			continue
@@ -91,16 +97,19 @@ func getDistance(mapA, mapB map[string]int) int {
 		if rankB, ok := mapB[key]; ok {
 			diff = rankB - rankA
 
-			if diff > 300 || diff < -300 {
-				diff = 300
+			if diff > maxDist || diff < negMaxDist {
+				diff = maxDist
 			} else if diff < 0 {
 				diff = diff * (-1)
 			}
 		} else {
-			diff = 300
+			diff = maxDist
 		}
 		result += diff
-
 	}
 	return result
+}
+
+func asPercent(input float32) int {
+	return int(input * 100)
 }
