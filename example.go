@@ -29,7 +29,13 @@ func main() {
 	//detector := langdet.NewDefaultDetector()
 	testString := GetTextFromFile("example_input.txt")
 	result := detector.GetClosestLanguage(testString)
-	fmt.Println(result)
+	fmt.Println("GetClosestLanguage returns:\n", "    ", result)
+
+	fullResults := detector.GetLanguages(testString)
+	fmt.Println("GetLanguages returns:")
+	for _, r := range fullResults {
+		fmt.Println("    ", r.Name, r.Confidence, "%")
+	}
 
 }
 

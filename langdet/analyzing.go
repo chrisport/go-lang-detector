@@ -23,8 +23,8 @@ func createRankLookupMap(input map[string]int) map[string]int {
 	sort.Sort(ByOccurrence(tokens))
 	result := make(map[string]int)
 	length := len(tokens)
-	for i, curr := range tokens {
-		result[curr.Key] = length - i
+	for i := length - 1; i >= 0 && i > length-601; i-- {
+		result[tokens[i].Key] = length - i
 	}
 	return result
 }
