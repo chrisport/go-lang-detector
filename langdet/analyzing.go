@@ -7,6 +7,8 @@ import (
 	"unicode/utf8"
 )
 
+// maxSampleSize represents the maximum number of tokens per sample, low number can
+// cause bad accuracy, but better performance.
 var maxSampleSize = -1
 
 func Analyze(text, name string) Language {
