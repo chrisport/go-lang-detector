@@ -36,17 +36,16 @@ GetClosestLanguage will return the language that most probably matches. To get t
 GetLanguage, which will return you all analyzed languages and their percentage of matching the input snippet
 
  ```
- testString := "ont permis d'identifier Mickaël Dos Santos parmi les bourreaux de prisonniers film"
- fullResults := detector.GetLanguages(testString)
+ testString := "ont permis d'identifier"
+ GetLanguages returns:
+     french 86 %
+     english 79 %
+     german 71 %
+     turkish 54 %
+     hebrew 39 %
+     arabic 8 %
+     russian 5 %
 
- output:
-      french 72 %
-      english 63 %
-      german 54 %
-      turkish 45 %
-      hebrew 30 %
-      arabic 5 %
-      russian 4 %
 
  ```
 
