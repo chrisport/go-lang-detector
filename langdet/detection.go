@@ -13,17 +13,17 @@ const nDepth = 4
 // defaultMinimumConfidence is the minimum confidence that a language-match must have to be returned as detected language
 var defaultMinimumConfidence float32 = 0.7
 
-var defaultLanguages []Language
+var defaultLanguages = []Language{}
 
 func init() {
-	analyzedInput, err := ioutil.ReadFile("default.json")
+	analyzedInput, err := ioutil.ReadFile("default_languages.json")
 	if err != nil {
-		fmt.Println("go-lang-detector/langdet: Could not read default languages from analyzed.json")
+		fmt.Println("go-lang-detector/langdet: No default languages loaded. default_languages.json not present")
 		return
 	}
 	err = json.Unmarshal(analyzedInput, &defaultLanguages)
 	if err != nil {
-		fmt.Println("go-lang-detector/langdet: Could not unmarshall default languages from analyzed.json")
+		fmt.Println("go-lang-detector/langdet: Could not unmarshall default languages from default_languages.json")
 		return
 	}
 }
@@ -60,11 +60,15 @@ func (d *Detector) GetClosestLanguage(text string) string {
 	if d.MinimumConfidence <= 0 || d.MinimumConfidence > 1 {
 		d.MinimumConfidence = defaultMinimumConfidence
 	}
+	if len(*d.Languages) == 0 {
+		fmt.Println("no languages configured for this detector")
+		return "undefined"
+	}
 	occurrenceMap := createOccurenceMap(text, nDepth)
 	lookupMap := createRankLookupMap(occurrenceMap)
 	results := d.closestFromTable(lookupMap)
 
-	if results[0].Confidence < asPercent(d.MinimumConfidence) {
+	if len(results) == 0 || results[0].Confidence < asPercent(d.MinimumConfidence) {
 		return "undefined"
 	}
 	return results[0].Name
