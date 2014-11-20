@@ -1,7 +1,6 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
 	"github.com/chrisport/go-lang-detector/langdet"
 	"io/ioutil"
@@ -23,8 +22,6 @@ func main() {
 	detector.AddLanguage(GetTextFromFile("samples/arabic"), "arabic")
 	detector.AddLanguage(GetTextFromFile("samples/hebrew"), "hebrew")
 	detector.AddLanguage(GetTextFromFile("samples/russian"), "russian")
-	bytes, _ := json.Marshal(*detector.Languages)
-	WriteToFile(bytes, "analyzed.json")
 
 	//detector := langdet.NewDefaultDetector()
 	testString := GetTextFromFile("example_input.txt")
