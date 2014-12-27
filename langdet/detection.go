@@ -28,15 +28,34 @@ func init() {
 	}
 }
 
+// InitWithDefault initializes the default languages with a provided file
+// containing Marshalled array of Languages
+func InitWithDefault(filePath string) {
+	analyzedInput, err := ioutil.ReadFile(filePath)
+	if err != nil {
+		panic(fmt.Sprintf("Could not open file of default languages: %v", err))
+	}
+	err = json.Unmarshal(analyzedInput, &defaultLanguages)
+	if err != nil {
+		panic(fmt.Sprintf("Could not unmarshall default languages: %v", err))
+	}
+}
+
 // Detector has an array of detectable Languages and methods to determine the closest Language to a text.
 type Detector struct {
 	Languages         *[]Language
 	MinimumConfidence float32
 }
 
-// The default detector includes default-languages:
+// NewDetector returns a new Detector without any language.
+// It can be used to add languages selectively.
+func NewDetector() Detector {
+	return Detector{&[]Language{}, defaultMinimumConfidence}
+}
+
+// NewDetectorDefault returns a new Detector with the default languages, if loaded:
 // currently: Arabic, English, French, German, Hebrew, Russian, Turkish
-func NewDefaultDetector() Detector {
+func NewDefaultLanguages() Detector {
 	defaultCopy := make([]Language, len(defaultLanguages))
 	copy(defaultCopy, defaultLanguages)
 	return Detector{&defaultCopy, defaultMinimumConfidence}
@@ -44,7 +63,7 @@ func NewDefaultDetector() Detector {
 
 // Add language analyzes a text and creates a new Language with given name.
 // The new language will be detectable afterwards by this Detector instance.
-func (d *Detector) AddLanguage(textToAnalyze, languageName string) {
+func (d *Detector) AddLanguageFromText(textToAnalyze, languageName string) {
 	if d.Languages == nil {
 		newSlice := make([]Language, 0, 0)
 		d.Languages = &newSlice
@@ -52,6 +71,19 @@ func (d *Detector) AddLanguage(textToAnalyze, languageName string) {
 	analyzedLanguage := Analyze(textToAnalyze, languageName)
 	updatedList := append(*d.Languages, analyzedLanguage)
 	*d.Languages = updatedList
+}
+
+// Add language adds a language to the list of detectable languages by this Detector instance.
+func (d *Detector) AddLanguage(languages ...Language) {
+	if d.Languages == nil {
+		s := make([]Language, 0, 0)
+		d.Languages = &s
+	}
+	l := *d.Languages
+	for i := range languages {
+		l = append(l, languages[i])
+	}
+	*d.Languages = l
 }
 
 // GetClosestLanguage returns the name of the language which is closest to the given text if it is confident enough.
@@ -64,28 +96,28 @@ func (d *Detector) GetClosestLanguage(text string) string {
 		fmt.Println("no languages configured for this detector")
 		return "undefined"
 	}
-	occurrenceMap := createOccurenceMap(text, nDepth)
-	lookupMap := createRankLookupMap(occurrenceMap)
-	results := d.closestFromTable(lookupMap)
+	occ := createOccurenceMap(text, nDepth)
+	lmap := createRankLookupMap(occ)
+	c := d.closestFromTable(lmap)
 
-	if len(results) == 0 || results[0].Confidence < asPercent(d.MinimumConfidence) {
+	if len(c) == 0 || c[0].Confidence < asPercent(d.MinimumConfidence) {
 		return "undefined"
 	}
-	return results[0].Name
+	return c[0].Name
 }
 
 // GetLanguages analyzes a text and returns the DetectionResult of all languages of this detector.
 func (d *Detector) GetLanguages(text string) []DetectionResult {
-	occurrenceMap := createOccurenceMap(text, nDepth)
-	lookupMap := createRankLookupMap(occurrenceMap)
-	results := d.closestFromTable(lookupMap)
+	occ := createOccurenceMap(text, nDepth)
+	lmap := createRankLookupMap(occ)
+	results := d.closestFromTable(lmap)
 	return results
 }
 
 // closestFromTable compares a lookupMap map[token]rank with all languages of this Detector and returns
 // an array containing all DetectionResults
 func (d *Detector) closestFromTable(lookupMap map[string]int) []DetectionResult {
-	results := []DetectionResult{}
+	res := []DetectionResult{}
 	inputSize := len(lookupMap)
 	if inputSize > 300 {
 		inputSize = 300
@@ -96,11 +128,11 @@ func (d *Detector) closestFromTable(lookupMap map[string]int) []DetectionResult 
 		dist := getDistance(lookupMap, language.Profile, lSize)
 		relativeDistance := 1 - float64(dist)/float64(maxPossibleDistance)
 		confidence := int(relativeDistance * 100)
-		results = append(results, DetectionResult{Name: language.Name, Confidence: confidence})
+		res = append(res, DetectionResult{Name: language.Name, Confidence: confidence})
 	}
 
-	sort.Sort(ResByConf(results))
-	return results
+	sort.Sort(ResByConf(res))
+	return res
 }
 
 // getDistance calculates the out-of-place distance between two Profiles,

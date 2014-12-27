@@ -1,3 +1,6 @@
+[![Build Status](https://drone.io/github.com/chrisport/go-lang-detector/status.png)](https://drone.io/github.com/chrisport/go-lang-detector/latest)
+Test coverage: 92.5%
+
 # Language Detector
 
 This golang library provides functionality to analyze and recognize language based on text.  
@@ -16,7 +19,7 @@ frequent token 'X' of the analyzed text, map['X'] will be 1.
 ## Usage
 ### Detect
 #### Get the closest language:
-The default detector supports the following languages:
+The default detector supports the following languages*:
 **Arabic, English, French, German, Hebrew, Russian, Turkish**
 
 ``` go
@@ -49,9 +52,12 @@ GetLanguage, which will return you all analyzed languages and their percentage o
 
  ```
 
-
+#### Use default languages
+In order to use default languages, the file default_languages.json must be placed in the same directory as the binary.
+Alternatively it can be anywhere on the filesystem and initialized by calling InitWithDefault with the filepath.
 
 ### Analyze
+
 The result will be a Language object, containing the specified name and the profile
 example:
 

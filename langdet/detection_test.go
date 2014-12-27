@@ -13,6 +13,96 @@ func createMapRanking(tokensInRank ...string) map[string]int {
 	return rankMap
 }
 
+func TestNew(t *testing.T) {
+	Convey("Subject: New detector", t, func() {
+		dd := NewDefaultLanguages()
+		d := NewDetector()
+		Convey("Detector should be initialized", func() {
+			So(d.Languages, ShouldNotBeNil)
+			So(dd.Languages, ShouldNotBeNil)
+		})
+	})
+	Convey("Subject: New detector with default languages", t, func() {
+		_ = NewDefaultLanguages()
+		d := NewDetector()
+		Convey("Detector should be initialized", func() {
+			So(d.Languages, ShouldNotBeNil)
+		})
+	})
+}
+
+func TestAddLanguage(t *testing.T) {
+	Convey("Subject: Add Language by text to new Detector", t, func() {
+		d := Detector{}
+		So(d.Languages, ShouldBeNil)
+
+		en := "This is an english sentence"
+		d.AddLanguageFromText(en, "en")
+
+		Convey("Detector should get initialized and the language should be added", func() {
+			So(d.Languages, ShouldNotBeNil)
+			So(len(*d.Languages), ShouldEqual, 1)
+			So((*d.Languages)[0].Name, ShouldEqual, "en")
+		})
+	})
+	Convey("Subject: Add Language directly to new Detector", t, func() {
+		d := Detector{}
+		So(d.Languages, ShouldBeNil)
+
+		d.AddLanguage(Language{Name: "en"})
+
+		Convey("Detector should get initialized and the language should be added", func() {
+			So(d.Languages, ShouldNotBeNil)
+			So(len(*d.Languages), ShouldEqual, 1)
+			So((*d.Languages)[0].Name, ShouldEqual, "en")
+		})
+	})
+}
+
+func TestClosest(t *testing.T) {
+	Convey("Subject: Test GetClosestLanguage", t, func() {
+		Convey("When finding a closest language", func() {
+			s := "Hello I am english text, what is your language? I really dont know you say?"
+			d := NewDetector()
+			d.AddLanguageFromText(s, "english")
+			d.AddLanguageFromText("Je parles français et toi?", "french")
+			Convey("Should return string with the language name", func() {
+				res := d.GetClosestLanguage(s)
+				So(res, ShouldEqual, "english")
+			})
+		})
+		Convey("When not finding a closest language", func() {
+			s := "Hello I am english text, what is your language? I really dont know you say?"
+			d := NewDetector()
+			d.AddLanguageFromText("Je parles français et toi?", "french")
+			Convey("Should return string \"undefined\"", func() {
+				res := d.GetClosestLanguage(s)
+				So(res, ShouldEqual, "undefined")
+			})
+		})
+		Convey("When invalid minimum confidence", func() {
+			d := NewDetector()
+			d.MinimumConfidence = -19
+			Convey("Should set confidence level to default", func() {
+				_ = d.GetClosestLanguage("asd")
+				So(d.MinimumConfidence, ShouldEqual, defaultMinimumConfidence)
+			})
+		})
+	})
+	Convey("Subject: Test GetLanguages", t, func() {
+		s := "Hello I am english text, what is your language? I really dont know you say?"
+		d := NewDetector()
+		d.AddLanguageFromText(s, "english")
+		d.AddLanguageFromText("Je parles français et toi?", "french")
+		Convey("Should return array with DetectionResults containing all languages", func() {
+			res := d.GetLanguages(s)
+			So(len(res), ShouldEqual, 2)
+			So(res[0].Name, ShouldEqual, "english")
+			So(res[1].Name, ShouldEqual, "french")
+		})
+	})
+
+}
 func TestGetDistance(t *testing.T) {
 	Convey("Subject: Test getDistance", t, func() {
 		Convey("same profiles should return distance 0", func() {
