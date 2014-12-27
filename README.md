@@ -1,6 +1,5 @@
 [![Build Status](https://drone.io/github.com/chrisport/go-lang-detector/status.png)](https://drone.io/github.com/chrisport/go-lang-detector/latest)
-Test coverage: 92.5%
-
+[![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
 # Language Detector
 
 This golang library provides functionality to analyze and recognize language based on text.  
