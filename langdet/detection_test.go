@@ -90,7 +90,7 @@ func TestClosest(t *testing.T) {
 		})
 	})
 	Convey("Subject: Test GetLanguages", t, func() {
-		s := "Hello I am english text, what is your language? I really dont know you say?"
+		s := "Hello I am english text"
 		d := NewDetector()
 		d.AddLanguageFromText(s, "english")
 		d.AddLanguageFromText("Je parles français et toi?", "french")

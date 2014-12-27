@@ -9,9 +9,14 @@ type Token struct {
 // ByOccurrence represents an array of tokens which can be sorted by occurrences of the tokens.
 type ByOccurrence []Token
 
-func (a ByOccurrence) Len() int           { return len(a) }
-func (a ByOccurrence) Swap(i, j int)      { a[i], a[j] = a[j], a[i] }
-func (a ByOccurrence) Less(i, j int) bool { return a[i].Occurrence < a[j].Occurrence }
+func (a ByOccurrence) Len() int      { return len(a) }
+func (a ByOccurrence) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
+func (a ByOccurrence) Less(i, j int) bool {
+	if a[i].Occurrence == a[j].Occurrence {
+		return a[i].Key < a[i].Key
+	}
+	return a[i].Occurrence < a[j].Occurrence
+}
 
 // Language represents a language by its name and the profile ( map[token]OccurrenceRank )
 type Language struct {
