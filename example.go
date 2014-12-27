@@ -15,13 +15,13 @@ func main() {
 
 	detector := langdet.Detector{}
 	// Analyze different languages from files and and write to analyzed.json:
-	detector.AddLanguage(GetTextFromFile("samples/english.txt"), "english")
-	detector.AddLanguage(GetTextFromFile("samples/german.txt"), "german")
-	detector.AddLanguage(GetTextFromFile("samples/french.txt"), "french")
-	detector.AddLanguage(GetTextFromFile("samples/turkish.txt"), "turkish")
-	detector.AddLanguage(GetTextFromFile("samples/arabic"), "arabic")
-	detector.AddLanguage(GetTextFromFile("samples/hebrew"), "hebrew")
-	detector.AddLanguage(GetTextFromFile("samples/russian"), "russian")
+	detector.AddLanguageFromText(GetTextFromFile("samples/english.txt"), "english")
+	detector.AddLanguageFromText(GetTextFromFile("samples/german.txt"), "german")
+	detector.AddLanguageFromText(GetTextFromFile("samples/french.txt"), "french")
+	detector.AddLanguageFromText(GetTextFromFile("samples/turkish.txt"), "turkish")
+	detector.AddLanguageFromText(GetTextFromFile("samples/arabic"), "arabic")
+	detector.AddLanguageFromText(GetTextFromFile("samples/hebrew"), "hebrew")
+	detector.AddLanguageFromText(GetTextFromFile("samples/russian"), "russian")
 
 	//detector := langdet.NewDefaultDetector()
 	testString := GetTextFromFile("example_input.txt")
