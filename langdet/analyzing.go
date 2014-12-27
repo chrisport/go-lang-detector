@@ -9,7 +9,8 @@ import (
 
 // maxSampleSize represents the maximum number of tokens per sample, low number can
 // cause bad accuracy, but better performance.
-var maxSampleSize = -1
+// -1 for no maximum
+var maxSampleSize = 10000
 
 // Analyze creates the language profile from a given Text and returns it in a Language struct.
 func Analyze(text, name string) Language {
