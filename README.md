@@ -72,8 +72,19 @@ New languages can directly be analyzed and added to a detector by providing a te
 
 ``` go
     text_sample := GetTextFromFile("samples/polish.txt")
-    detector.AddLanguage(text_sample, "polish")
+    detector.AddLanguageFrom(text_sample, "polish")
 ```
 
 The text sample should be bigger then 200kb and can be "dirty" (special chars, lists, etc.), but the language
 should not change for long parts.
+
+Altermatively Analyze can be used and the resulting language can added using AddLanguage method:
+
+``` go
+    text_sample := GetTextFromFile("samples/polish.txt")
+    french := langdet.Analyze(text_sample, "french")
+
+    //language can be added selectively to detectors
+    detectorA.AddLanguage(french)
+    detectorC.AddLanguage(french)
+```
