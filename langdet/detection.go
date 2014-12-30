@@ -15,6 +15,8 @@ var defaultMinimumConfidence float32 = 0.7
 
 var defaultLanguages = []Language{}
 
+var DefaultDetector = Detector{&defaultLanguages, defaultMinimumConfidence}
+
 func init() {
 	analyzedInput, err := ioutil.ReadFile("default_languages.json")
 	if err != nil {
