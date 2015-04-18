@@ -18,7 +18,7 @@ frequent token 'X' of the analyzed text, map['X'] will be 1.
 ## Usage
 ### Detect
 #### Get the closest language:
-The default detector supports the following languages*:
+The default detector supports the following languages:
 **Arabic, English, French, German, Hebrew, Russian, Turkish**
 
 ``` go
@@ -77,7 +77,7 @@ New languages can directly be analyzed and added to a detector by providing a te
 The text sample should be bigger then 200kb and can be "dirty" (special chars, lists, etc.), but the language
 should not change for long parts.
 
-Altermatively Analyze can be used and the resulting language can added using AddLanguage method:
+Alternatively Analyze can be used and the resulting language can added using AddLanguage method:
 
 ``` go
     text_sample := GetTextFromFile("samples/polish.txt")
@@ -87,3 +87,12 @@ Altermatively Analyze can be used and the resulting language can added using Add
     detectorA.AddLanguage(french)
     detectorC.AddLanguage(french)
 ```
+
+## Contribution
+
+Suggestions and Bug reports can be made through Github issues.
+Contributions are welcomed, there is currently no need to open an issue for it, but please follow the code style, including descriptive tests with [GoConvey](http://goconvey.co/).
+
+## License
+
+Licensed under [Apache 2.0](LICENSE).
