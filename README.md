@@ -55,9 +55,9 @@ GetLanguage, which will return you all analyzed languages and their percentage o
 In order to use default languages, the file default_languages.json must be placed in the same directory as the binary.
 Alternatively it can be anywhere on the filesystem and initialized by calling InitWithDefault with the filepath.
 
-### Analyze
+### Analyze new language
 
-The result will be a Language object, containing the specified name and the profile
+For analysing a new language random Wikipedia articles in the target languages are ideal. The result will be a Language object, containing the specified name and the profile
 example:
 
 ``` go
