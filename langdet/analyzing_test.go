@@ -1,4 +1,4 @@
-package langdet
+package langdet_test
 
 import (
 	. "github.com/smartystreets/goconvey/convey"
