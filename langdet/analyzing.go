@@ -14,13 +14,13 @@ var maxSampleSize = 10000
 
 // Analyze creates the language profile from a given Text and returns it in a Language struct.
 func Analyze(text, name string) Language {
-	theMap := createOccurenceMap(text, nDepth)
-	ranked := createRankLookupMap(theMap)
+	theMap := CreateOccurenceMap(text, nDepth)
+	ranked := CreateRankLookupMap(theMap)
 	return Language{Name: name, Profile: ranked}
 }
 
 // creates the map [token] rank from a map [token] occurrence
-func createRankLookupMap(input map[string]int) map[string]int {
+func CreateRankLookupMap(input map[string]int) map[string]int {
 	tokens := make([]Token, len(input))
 	counter := 0
 	for k, v := range input {
@@ -40,9 +40,9 @@ func createRankLookupMap(input map[string]int) map[string]int {
 	return result
 }
 
-// createOccurenceMap creates a map[token]occurrence from a given text and up to a given gram depth
+// CreateOccurenceMap creates a map[token]occurrence from a given text and up to a given gram depth
 // gramDepth=1 means only 1-letter tokens are created, gramDepth=2 means 1- and 2-letters token are created, etc.
-func createOccurenceMap(text string, gramDepth int) map[string]int {
+func CreateOccurenceMap(text string, gramDepth int) map[string]int {
 	text = cleanText(text)
 	tokens := strings.Split(text, " ")
 	result := make(map[string]int)
