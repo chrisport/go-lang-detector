@@ -4,6 +4,7 @@ import (
 	. "github.com/smartystreets/goconvey/convey"
 	"github.com/chrisport/go-lang-detector/langdet"
 	"testing"
+	"strings"
 )
 
 func createMapRanking(tokensInRank ...string) map[string]int {
@@ -28,6 +29,22 @@ func TestNew(t *testing.T) {
 		d := langdet.NewDetector()
 		Convey("Detector should be initialized", func() {
 			So(d.Languages, ShouldNotBeNil)
+		})
+	})
+	Convey("Subject: New detector with languages from reader", t, func() {
+		languageMapAsJson := "[{\"Profile\":{\"____t\":1,\"___t\":3,\"___t_\":5,\"__t\":7,\"__t_\":6,\"__t__\":9,\"_t\":15,\"_t_\":12,\"_t__\":2,\"_t___\":11,\"t\":4,\"t_\":8,\"t__\":14,\"t___\":13,\"t____\":10},\"Name\":\"english\"}]"
+		reader := strings.NewReader(languageMapAsJson)
+		d := langdet.NewWithLanguagesFromReader(reader)
+		Convey("Detector should be initialized", func() {
+			So(d.Languages, ShouldNotBeNil)
+		})
+	})
+	Convey("Subject: Initialize DefaultLanguage with languages from reader", t, func() {
+		languageMapAsJson := "[{\"Profile\":{\"____t\":1,\"___t\":3,\"___t_\":5,\"__t\":7,\"__t_\":6,\"__t__\":9,\"_t\":15,\"_t_\":12,\"_t__\":2,\"_t___\":11,\"t\":4,\"t_\":8,\"t__\":14,\"t___\":13,\"t____\":10},\"Name\":\"english\"}]"
+		reader := strings.NewReader(languageMapAsJson)
+		langdet.InitWithDefaultFromReader(reader)
+		Convey("Detector should be initialized", func() {
+			So(langdet.DefaultDetector.Languages, ShouldNotBeNil)
 		})
 	})
 }
