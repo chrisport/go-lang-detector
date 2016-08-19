@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"io"
 	"sort"
 )
 
@@ -35,11 +36,25 @@ func init() {
 func InitWithDefault(filePath string) {
 	analyzedInput, err := ioutil.ReadFile(filePath)
 	if err != nil {
-		panic(fmt.Sprintf("Could not open file of default languages: %v", err))
+		panic(fmt.Sprintf("Could not open languages file: %v", err))
 	}
-	err = json.Unmarshal(analyzedInput, &defaultLanguages)
+	parseExistingLanguageMap(&analyzedInput, &defaultLanguages)
+}
+
+// InitWithDefault initializes the default languages with a provided Reader
+// containing Marshalled array of Languages
+func InitWithDefaultFromReader(reader io.Reader) {
+	analyzedInput, err := ioutil.ReadAll(reader)
 	if err != nil {
-		panic(fmt.Sprintf("Could not unmarshall default languages: %v", err))
+		panic(fmt.Sprintf("Could not process languages io.Reader: %v", err))
+	}
+	parseExistingLanguageMap(&analyzedInput, &defaultLanguages)
+}
+
+func parseExistingLanguageMap(bytes *[]byte, targetLanguages *[]Language) {
+	err := json.Unmarshal(*bytes, targetLanguages)
+	if err != nil {
+		panic(fmt.Sprintf("Could not unmarshall languages: %v", err))
 	}
 }
 
@@ -61,6 +76,17 @@ func NewDefaultLanguages() Detector {
 	defaultCopy := make([]Language, len(defaultLanguages))
 	copy(defaultCopy, defaultLanguages)
 	return Detector{&defaultCopy, DefaultMinimumConfidence}
+}
+
+// NewWithLanguagesFromReader returns a new Detector with existing language parsed from a reader
+func NewWithLanguagesFromReader(reader io.Reader) Detector {
+	languages := []Language{}
+	analyzedInput, err := ioutil.ReadAll(reader)
+	if err != nil {
+		panic(fmt.Sprintf("Could not unmarshall languages: %v", err))
+	}
+	parseExistingLanguageMap(&analyzedInput, &languages)
+	return Detector{&languages, DefaultMinimumConfidence}
 }
 
 // Add language analyzes a text and creates a new Language with given name.
@@ -128,7 +154,7 @@ func (d *Detector) closestFromTable(lookupMap map[string]int) []DetectionResult 
 		lSize := len(language.Profile)
 		maxPossibleDistance := lSize * inputSize
 		dist := GetDistance(lookupMap, language.Profile, lSize)
-		relativeDistance := 1 - float64(dist)/float64(maxPossibleDistance)
+		relativeDistance := 1 - float64(dist) / float64(maxPossibleDistance)
 		confidence := int(relativeDistance * 100)
 		res = append(res, DetectionResult{Name: language.Name, Confidence: confidence})
 	}
