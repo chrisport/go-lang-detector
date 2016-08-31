@@ -13,7 +13,7 @@ import (
 var maxSampleSize = 10000
 
 // Analyze creates the language profile from a given Text and returns it in a Language struct.
-func Analyze(text, name string) Language {
+func Analyze(text, name string, nDepth int) Language {
 	theMap := CreateOccurenceMap(text, nDepth)
 	ranked := CreateRankLookupMap(theMap)
 	return Language{Name: name, Profile: ranked}

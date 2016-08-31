@@ -1,9 +1,10 @@
 package langdet_test
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
-	"github.com/chrisport/go-lang-detector/langdet"
 	"testing"
+
+	"github.com/chrisport/go-lang-detector/langdet"
+	. "github.com/smartystreets/goconvey/convey"
 )
 
 func BenchmarkCalculateElapsedTimeInMillis(b *testing.B) {
