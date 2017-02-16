@@ -1,4 +1,4 @@
-[![wercker status](https://app.wercker.com/status/671a0e9ac622f35347d86d2dc104dfa0/m "wercker status")](https://app.wercker.com/project/bykey/671a0e9ac622f35347d86d2dc104dfa0)
+[![wercker status](https://app.wercker.com/status/9e2a695f35c1cf5e1cac46035e4ca7a6/m/ "wercker status")](https://app.wercker.com/project/byKey/9e2a695f35c1cf5e1cac46035e4ca7a6)
 [![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
 # Language Detector
 
