@@ -30,7 +30,7 @@ build:
     - script:
         name: go get
         code: |
-          go get -t
+          go get -t ./...
 
     # Build the project
     - script:
