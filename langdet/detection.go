@@ -70,7 +70,7 @@ func NewDetector() Detector {
 	return Detector{&[]Language{}, DefaultMinimumConfidence}
 }
 
-// NewDetectorDefault returns a new Detector with the default languages, if loaded:
+// NewDefaultLanguages returns a new Detector with the default languages, if loaded:
 // currently: Arabic, English, French, German, Hebrew, Russian, Turkish
 func NewDefaultLanguages() Detector {
 	defaultCopy := make([]Language, len(defaultLanguages))
