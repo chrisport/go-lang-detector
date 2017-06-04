@@ -7,10 +7,10 @@ that are not worth an own project.
 ## Shut - Simple Sleep Timer
 Usage:
 
-$ ./sleep.sh
+$ ./sleep.sh   
 Sleeping in 6 minutes
 
-$ ./sleep.sh 12
+$ ./sleep.sh 12   
 Sleeping in 12 minutes
 
 ## Benchme - HTTP Request benchmark
