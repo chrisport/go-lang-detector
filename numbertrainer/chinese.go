@@ -1,14 +1,17 @@
 package main
 
 import (
-	"time"
-	"math/rand"
-	"fmt"
 	"bufio"
+	"fmt"
+	"math/rand"
 	"os"
-	"strings"
 	"strconv"
+	"strings"
+	"time"
+	"unicode/utf8"
 )
+
+const gap string = "    "
 
 var chineseNrs = map[int]string{
 	1:  "一",
@@ -45,7 +48,7 @@ type RandomNumber struct {
 func GenerateRandomNumber() RandomNumber {
 	var pinyin, chinese string
 
-	nr := rand.Int() % 100
+	nr := (rand.Int() % 100) + 1
 	if nr >= 20 {
 		pinyin = pinyinNrs[nr/10] + " " + pinyinNrs[10] + " "
 		chinese = chineseNrs[nr/10] + chineseNrs[10]
@@ -91,7 +94,7 @@ choseMode:
 		fmt.Print("Type 1, 2 or 3 and press enter to chose mode. ")
 		goto choseMode
 	}
-	time.Sleep(3*time.Second)
+	time.Sleep(3 * time.Second)
 	playRound(reader, mode, resultChecker)
 }
 
@@ -110,17 +113,24 @@ var passivePinYin = func(number RandomNumber) string {
 func playRound(reader *bufio.Reader, mode func(RandomNumber) string, resultChecker func(RandomNumber, string)) {
 	fmt.Println("______________________________")
 
-	for roundCounter:=1;;roundCounter++{
-		fmt.Println("ROUND "+strconv.Itoa(roundCounter))
+	for roundCounter := 1; ; roundCounter++ {
+		fmt.Println("ROUND " + strconv.Itoa(roundCounter))
 
 		nr := GenerateRandomNumber()
 		visiblePart := mode(nr)
 		fmt.Println(visiblePart)
 		a, _ := reader.ReadString('\n')
 		ac := strings.TrimRight(string(a), "\n")
+		fmt.Println(pad(string(nr.intVal), 2) + gap + pad(nr.pinyin, 11) + gap + nr.chinese)
 		resultChecker(nr, ac)
-		fmt.Println(string(nr.intVal) + "  =  " + nr.pinyin + "    " + nr.chinese)
 		fmt.Println("______________________________")
 		time.Sleep(2 * time.Second)
 	}
+}
+
+func pad(s string, length int) string {
+	for i := utf8.RuneCount([]byte(s)); i < length; i++ {
+		s += " "
+	}
+	return s
 }
