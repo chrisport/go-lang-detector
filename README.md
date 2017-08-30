@@ -1,4 +1,4 @@
-[![wercker status](https://app.wercker.com/status/671a0e9ac622f35347d86d2dc104dfa0/m "wercker status")](https://app.wercker.com/project/bykey/671a0e9ac622f35347d86d2dc104dfa0)
+[![wercker status](https://app.wercker.com/status/9e2a695f35c1cf5e1cac46035e4ca7a6/m/ "wercker status")](https://app.wercker.com/project/byKey/9e2a695f35c1cf5e1cac46035e4ca7a6)
 [![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
 # Language Detector
 
@@ -22,7 +22,7 @@ The default detector supports the following languages:
 **Arabic, English, French, German, Hebrew, Russian, Turkish**
 
 ``` go
-    detector := langdet.NewDefaultDetector()
+    detector := langdet.NewDefaultLanguages()
 	testString := "do not care about quantity"
 	result := detector.GetClosestLanguage(testString)
 	fmt.Println(result)
@@ -55,9 +55,9 @@ GetLanguage, which will return you all analyzed languages and their percentage o
 In order to use default languages, the file default_languages.json must be placed in the same directory as the binary.
 Alternatively it can be anywhere on the filesystem and initialized by calling InitWithDefault with the filepath.
 
-### Analyze
+### Analyze new language
 
-The result will be a Language object, containing the specified name and the profile
+For analysing a new language random Wikipedia articles in the target languages are ideal. The result will be a Language object, containing the specified name and the profile
 example:
 
 ``` go

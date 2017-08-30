@@ -13,7 +13,7 @@ func (a ByOccurrence) Len() int      { return len(a) }
 func (a ByOccurrence) Swap(i, j int) { a[i], a[j] = a[j], a[i] }
 func (a ByOccurrence) Less(i, j int) bool {
 	if a[i].Occurrence == a[j].Occurrence {
-		return a[i].Key < a[i].Key
+		return a[i].Key < a[j].Key
 	}
 	return a[i].Occurrence < a[j].Occurrence
 }
