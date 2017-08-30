@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/chrisport/go-lang-detector/langdet"
 	"io/ioutil"
 	"os"
+
+	"github.com/chrisport/go-lang-detector/langdet"
 )
 
 /*

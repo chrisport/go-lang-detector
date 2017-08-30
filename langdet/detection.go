@@ -3,20 +3,20 @@ package langdet
 import (
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"io"
+	"io/ioutil"
 	"sort"
 )
 
 // the depth of n-gram tokens that are created. if nDepth=1, only 1-letter tokens are created
-const nDepth = 4
+const defaultNDepth = 4
 
 // DefaultMinimumConfidence is the minimum confidence that a language-match must have to be returned as detected language
 var DefaultMinimumConfidence float32 = 0.7
 
 var defaultLanguages = []Language{}
 
-var DefaultDetector = Detector{&defaultLanguages, DefaultMinimumConfidence}
+var DefaultDetector = Detector{&defaultLanguages, DefaultMinimumConfidence, defaultNDepth}
 
 func init() {
 	analyzedInput, err := ioutil.ReadFile("default_languages.json")
@@ -62,12 +62,13 @@ func parseExistingLanguageMap(bytes *[]byte, targetLanguages *[]Language) {
 type Detector struct {
 	Languages         *[]Language
 	MinimumConfidence float32
+	NDepth            int
 }
 
 // NewDetector returns a new Detector without any language.
 // It can be used to add languages selectively.
 func NewDetector() Detector {
-	return Detector{&[]Language{}, DefaultMinimumConfidence}
+	return Detector{&[]Language{}, DefaultMinimumConfidence, defaultNDepth}
 }
 
 // NewDefaultLanguages returns a new Detector with the default languages, if loaded:
@@ -75,7 +76,7 @@ func NewDetector() Detector {
 func NewDefaultLanguages() Detector {
 	defaultCopy := make([]Language, len(defaultLanguages))
 	copy(defaultCopy, defaultLanguages)
-	return Detector{&defaultCopy, DefaultMinimumConfidence}
+	return Detector{&defaultCopy, DefaultMinimumConfidence, defaultNDepth}
 }
 
 // NewWithLanguagesFromReader returns a new Detector with existing language parsed from a reader
@@ -86,7 +87,7 @@ func NewWithLanguagesFromReader(reader io.Reader) Detector {
 		panic(fmt.Sprintf("Could not unmarshall languages: %v", err))
 	}
 	parseExistingLanguageMap(&analyzedInput, &languages)
-	return Detector{&languages, DefaultMinimumConfidence}
+	return Detector{&languages, DefaultMinimumConfidence, defaultNDepth}
 }
 
 // Add language analyzes a text and creates a new Language with given name.
@@ -96,7 +97,10 @@ func (d *Detector) AddLanguageFromText(textToAnalyze, languageName string) {
 		newSlice := make([]Language, 0, 0)
 		d.Languages = &newSlice
 	}
-	analyzedLanguage := Analyze(textToAnalyze, languageName)
+	if d.NDepth == 0 {
+		d.NDepth = defaultNDepth
+	}
+	analyzedLanguage := Analyze(textToAnalyze, languageName, d.NDepth)
 	updatedList := append(*d.Languages, analyzedLanguage)
 	*d.Languages = updatedList
 }
@@ -124,7 +128,10 @@ func (d *Detector) GetClosestLanguage(text string) string {
 		fmt.Println("no languages configured for this detector")
 		return "undefined"
 	}
-	occ := CreateOccurenceMap(text, nDepth)
+	if d.NDepth == 0 {
+		d.NDepth = defaultNDepth
+	}
+	occ := CreateOccurenceMap(text, d.NDepth)
 	lmap := CreateRankLookupMap(occ)
 	c := d.closestFromTable(lmap)
 
@@ -136,7 +143,10 @@ func (d *Detector) GetClosestLanguage(text string) string {
 
 // GetLanguages analyzes a text and returns the DetectionResult of all languages of this detector.
 func (d *Detector) GetLanguages(text string) []DetectionResult {
-	occ := CreateOccurenceMap(text, nDepth)
+	if d.NDepth == 0 {
+		d.NDepth = defaultNDepth
+	}
+	occ := CreateOccurenceMap(text, d.NDepth)
 	lmap := CreateRankLookupMap(occ)
 	results := d.closestFromTable(lmap)
 	return results
@@ -154,7 +164,7 @@ func (d *Detector) closestFromTable(lookupMap map[string]int) []DetectionResult 
 		lSize := len(language.Profile)
 		maxPossibleDistance := lSize * inputSize
 		dist := GetDistance(lookupMap, language.Profile, lSize)
-		relativeDistance := 1 - float64(dist) / float64(maxPossibleDistance)
+		relativeDistance := 1 - float64(dist)/float64(maxPossibleDistance)
 		confidence := int(relativeDistance * 100)
 		res = append(res, DetectionResult{Name: language.Name, Confidence: confidence})
 	}
