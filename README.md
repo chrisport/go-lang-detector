@@ -1,9 +1,11 @@
 [![wercker status](https://app.wercker.com/status/9e2a695f35c1cf5e1cac46035e4ca7a6/m/ "wercker status")](https://app.wercker.com/project/byKey/9e2a695f35c1cf5e1cac46035e4ca7a6)
 [![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
+
+Breaking changes in v1.0: please see chapter "Migration" below.
+
 # Language Detector
 
-This golang library provides functionality to analyze and recognize language based on text.  
-
+This golang library provides functionality to analyze and recognize language based on text.
 
 The implementation is based on the following paper:  
 N-Gram-Based Text Categorization  
@@ -51,10 +53,6 @@ GetLanguage, which will return you all analyzed languages and their percentage o
 
  ```
 
-#### Use default languages
-In order to use default languages, the file default_languages.json must be placed in the same directory as the binary.
-Alternatively it can be anywhere on the filesystem and initialized by calling InitWithDefault with the filepath.
-
 ### Analyze new language
 
 For analysing a new language random Wikipedia articles in the target languages are ideal. The result will be a Language object, containing the specified name and the profile
@@ -87,6 +85,13 @@ Alternatively Analyze can be used and the resulting language can added using Add
     detectorA.AddLanguage(french)
     detectorC.AddLanguage(french)
 ```
+
+## Migration to v1.0
+
+This library has been adapted to a more convenient and more idiomatic way.
+- Default languages are provided in Go code and there is no need for adding the json file anymore.
+- If you provide your own custom default.json, please do so through the corresponding methods InitWithDefault
+- InitWithDefaultFromFile has been removed, please use InitDefaultsFromReader instead
 
 ## Contribution
 

@@ -3,37 +3,18 @@ package main
 import (
 	"fmt"
 	"github.com/chrisport/go-lang-detector/langdet"
+
 	"io/ioutil"
 	"os"
 )
 
-/*
-analyzed.json includes:
-Arabic, English, French, German, Hebrew, Russian, Turkish
-*/
 func main() {
+	detector := langdet.NewDefaultLanguages()
 
-	//sample using Reader to Initialize default languages
-	//	analyzedInput, _ := ioutil.ReadFile("default_languages2.json")
-	//	s := string(analyzedInput[:1652088])
-	//	langdet.InitWithDefaultFromReader(strings.NewReader(s))
-	//	detector := langdet.NewDefaultLanguages()
-
-	//sample by manually analyzing languages
-	//	 Analyze different languages from files and and write to analyzed.json:
-	detector := langdet.Detector{}
-	detector.AddLanguageFromText(GetTextFromFile("samples/english.txt"), "english")
-	detector.AddLanguageFromText(GetTextFromFile("samples/german.txt"), "german")
-	detector.AddLanguageFromText(GetTextFromFile("samples/french.txt"), "french")
-	detector.AddLanguageFromText(GetTextFromFile("samples/turkish.txt"), "turkish")
-	detector.AddLanguageFromText(GetTextFromFile("samples/arabic"), "arabic")
-	detector.AddLanguageFromText(GetTextFromFile("samples/hebrew"), "hebrew")
-	detector.AddLanguageFromText(GetTextFromFile("samples/russian"), "russian")
-	testString := GetTextFromFile("example_input.txt")
-	result := detector.GetClosestLanguage(testString)
+	result := detector.GetClosestLanguage("ont ne comprend rien")
 	fmt.Println("GetClosestLanguage returns:\n", "    ", result)
 
-	fullResults := detector.GetLanguages(testString)
+	fullResults := detector.GetLanguages("ont ne comprend rien")
 	fmt.Println("GetLanguages returns:")
 	for _, r := range fullResults {
 		fmt.Println("    ", r.Name, r.Confidence, "%")

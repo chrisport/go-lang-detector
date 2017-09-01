@@ -1,0 +1,12 @@
+{
+	"ImportPath": "github.com/chrisport/go-lang-detector",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v79",
+	"Deps": [
+		{
+			"ImportPath": "github.com/pkg/errors",
+			"Comment": "v0.8.0-2-g248dadf",
+			"Rev": "248dadf4e9068a0b3e79f02ed0a610d935de5302"
+		}
+	]
+}

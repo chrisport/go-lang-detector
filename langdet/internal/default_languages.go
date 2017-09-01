@@ -3,7 +3,7 @@
 // default_languages.json
 // DO NOT EDIT!
 
-package langdet_default
+package internal
 
 import (
 	"bytes"
