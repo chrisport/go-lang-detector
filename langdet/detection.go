@@ -1,7 +1,6 @@
 package langdet
 
 import (
-	"bytes"
 	"encoding/json"
 	"github.com/chrisport/go-lang-detector/langdet/internal"
 	"github.com/pkg/errors"
@@ -9,6 +8,8 @@ import (
 	"io/ioutil"
 	"log"
 	"sort"
+	"strings"
+	"bytes"
 )
 
 // the depth of n-gram tokens that are created. if nDepth=1, only 1-letter tokens are created
@@ -25,7 +26,7 @@ func init() {
 	//TODO remove the file parsing some time in future
 	analyzedInput, err := ioutil.ReadFile("default_languages.json")
 	if err == nil {
-		_ = json.Unmarshal(analyzedInput, &defaultLanguages)
+		InitDefaultsFromReader(bytes.NewReader(analyzedInput))
 		log.Println("Usage of default json is deprecated, default libraries are provided automatically without json file.\n" +
 			"To provide custom defaults, please use InitWithDefault")
 		return
@@ -35,15 +36,20 @@ func init() {
 	if err != nil {
 		log.Println("Could not initialize default languages")
 	}
-	InitDefaultsFromReader(bytes.NewReader(def))
+
+	InitDefaultsFromReader(strings.NewReader(string(def)))
 }
 
 // InitDefaultsFromReader initializes the default languages with a provided Reader
 // containing a Marshaled array of Languages
 func InitDefaultsFromReader(reader io.Reader) error {
-	err := json.NewDecoder(reader).Decode(&defaultLanguages)
+	lan := []Language{}
+	err := json.NewDecoder(reader).Decode(&lan)
 	if err != nil {
 		return errors.Wrap(err, "Could not process languages from io.Reader.")
+	}
+	for i := range lan {
+		defaultLanguages = append(defaultLanguages, &lan[i])
 	}
 	return nil
 }
@@ -116,7 +122,7 @@ func (d *Detector) GetClosestLanguage(text string) string {
 	return c[0].Name
 }
 
-func lazyLookupMap(text string, nDepth int) func() map[string]int {
+var lazyLookupMap = func(text string, nDepth int) func() map[string]int {
 	var rankLookupMap map[string]int
 	return func() map[string]int {
 		if rankLookupMap == nil {
