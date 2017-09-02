@@ -3,6 +3,7 @@ package langdet
 import (
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
+	"unicode"
 )
 
 type mockComparator struct {
@@ -30,23 +31,22 @@ func TestLanguageComparator(t *testing.T) {
 	})
 }
 
-
 func TestChinese(t *testing.T) {
 	Convey("given chinese is added", t, func() {
 		d := NewDetector()
-		clc := CJKLanguageComparator{}
+		clc := UnicodeRangeLanguageComparator{"chinese", unicode.Han}
 		d.AddLanguageComparators(&clc)
 		res := d.GetLanguages("not chinese")
 		Convey("then do not detect non-chinese as Chinese", func() {
 			So(len(res), ShouldEqual, 1)
-			So(res[0].Name, ShouldEqual, "Chinese")
+			So(res[0].Name, ShouldEqual, "chinese")
 			So(res[0].Confidence, ShouldEqual, 0)
 		})
 
 		res = d.GetLanguages("漢字")
 		Convey("then do detect Chinese language", func() {
 			So(len(res), ShouldEqual, 1)
-			So(res[0].Name, ShouldEqual, "Chinese")
+			So(res[0].Name, ShouldEqual, "chinese")
 			So(res[0].Confidence, ShouldEqual, 100)
 		})
 	})

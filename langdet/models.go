@@ -38,11 +38,13 @@ func (l *Language) CompareTo(lazyLookupMap func() map[string]int, originaltext s
 	if inputSize > 300 {
 		inputSize = 300
 	}
-	lSize := len(lookupMap)
+	lSize := len(l.Profile)
+
 	maxPossibleDistance := lSize * len(lookupMap)
 	dist := GetDistance(lookupMap, l.Profile, lSize)
 	relativeDistance := 1 - float64(dist)/float64(maxPossibleDistance)
 	confidence := int(relativeDistance * 100)
+
 	return DetectionResult{Name: l.Name, Confidence: confidence}
 }
 

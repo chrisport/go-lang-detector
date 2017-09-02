@@ -1,15 +1,8 @@
 package langdet
 
 import (
-	"encoding/json"
-	"github.com/chrisport/go-lang-detector/langdet/internal"
-	"github.com/pkg/errors"
-	"io"
-	"io/ioutil"
 	"log"
 	"sort"
-	"strings"
-	"bytes"
 )
 
 // the depth of n-gram tokens that are created. if nDepth=1, only 1-letter tokens are created
@@ -17,42 +10,6 @@ const nDepth = 4
 
 // DefaultMinimumConfidence is the minimum confidence that a language-match must have to be returned as detected language
 var DefaultMinimumConfidence float32 = 0.7
-
-var defaultLanguages = []LanguageComparator{}
-
-var DefaultDetector = Detector{defaultLanguages, DefaultMinimumConfidence}
-
-func init() {
-	//TODO remove the file parsing some time in future
-	analyzedInput, err := ioutil.ReadFile("default_languages.json")
-	if err == nil {
-		InitDefaultsFromReader(bytes.NewReader(analyzedInput))
-		log.Println("Usage of default json is deprecated, default libraries are provided automatically without json file.\n" +
-			"To provide custom defaults, please use InitWithDefault")
-		return
-	}
-
-	def, err := internal.Asset("default_languages.json")
-	if err != nil {
-		log.Println("Could not initialize default languages")
-	}
-
-	InitDefaultsFromReader(strings.NewReader(string(def)))
-}
-
-// InitDefaultsFromReader initializes the default languages with a provided Reader
-// containing a Marshaled array of Languages
-func InitDefaultsFromReader(reader io.Reader) error {
-	lan := []Language{}
-	err := json.NewDecoder(reader).Decode(&lan)
-	if err != nil {
-		return errors.Wrap(err, "Could not process languages from io.Reader.")
-	}
-	for i := range lan {
-		defaultLanguages = append(defaultLanguages, &lan[i])
-	}
-	return nil
-}
 
 // Detector has an array of detectable Languages and methods to determine the closest Language to a text.
 type Detector struct {
@@ -64,12 +21,6 @@ type Detector struct {
 // It can be used to add languages selectively.
 func NewDetector() Detector {
 	return Detector{[]LanguageComparator{}, DefaultMinimumConfidence}
-}
-
-// NewDefaultLanguages returns a new Detector with the default languages, if loaded:
-// currently: Arabic, English, French, German, Hebrew, Russian, Turkish
-func NewDefaultLanguages() Detector {
-	return Detector{defaultLanguages, DefaultMinimumConfidence}
 }
 
 // Add language analyzes a text and creates a new Language with given name.

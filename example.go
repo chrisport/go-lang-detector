@@ -2,26 +2,23 @@ package main
 
 import (
 	"fmt"
-	"github.com/chrisport/go-lang-detector/langdet"
+	"github.com/chrisport/go-lang-detector/langdet/langdetdef"
 )
 
 func main() {
-	detector := langdet.NewDefaultLanguages()
+	detector := langdetdef.NewWithDefaultLanguages()
 
-	result := detector.GetClosestLanguage("Comment ça va? Est-ce que ça va bien?")
+	result := detector.GetClosestLanguage("ont ne comprend rien")
 	fmt.Println("GetClosestLanguage returns:\n", "    ", result)
 
-	fullResults := detector.GetLanguages("Comment ça va? Est-ce que ça va bien?")
+	fullResults := detector.GetLanguages("ont ne comprend rien")
 	fmt.Println("GetLanguages returns:")
 	for _, r := range fullResults {
 		fmt.Println("    ", r.Name, r.Confidence, "%")
 	}
 
-	detector.AddLanguageComparators(&langdet.CJKLanguageComparator{})
-
-	detector.GetLanguages("ont ne comprend rien")
-	detector.GetLanguages("义勇军进行曲")
-	fmt.Println("GetLanguages returns:")
+	fullResults = detector.GetLanguages("义勇军进行曲")
+	fmt.Println("GetLanguages for Chinese returns:")
 	for _, r := range fullResults {
 		fmt.Println("    ", r.Name, r.Confidence, "%")
 	}
