@@ -1,8 +1,8 @@
 package langdet_test
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	"github.com/chrisport/go-lang-detector/langdet"
+	. "github.com/smartystreets/goconvey/convey"
 	"testing"
 )
 

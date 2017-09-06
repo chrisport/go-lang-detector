@@ -19,9 +19,33 @@ func (a ByOccurrence) Less(i, j int) bool {
 }
 
 // Language represents a language by its name and the profile ( map[token]OccurrenceRank )
+type LanguageComparator interface {
+	CompareTo(lazyLookupMap func() map[string]int, originalText string) DetectionResult
+	GetName() string
+}
+
 type Language struct {
 	Profile map[string]int
 	Name    string
+}
+
+func (l *Language) GetName() string {
+	return l.Name
+}
+func (l *Language) CompareTo(lazyLookupMap func() map[string]int, originaltext string) DetectionResult {
+	lookupMap := lazyLookupMap()
+	inputSize := len(lookupMap)
+	if inputSize > 300 {
+		inputSize = 300
+	}
+	lSize := len(l.Profile)
+
+	maxPossibleDistance := lSize * len(lookupMap)
+	dist := GetDistance(lookupMap, l.Profile, lSize)
+	relativeDistance := 1 - float64(dist)/float64(maxPossibleDistance)
+	confidence := int(relativeDistance * 100)
+
+	return DetectionResult{Name: l.Name, Confidence: confidence}
 }
 
 // DetectionResult represents the result from comparing 2 Profiles. It includes the confidence which is basically the
