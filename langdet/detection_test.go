@@ -1,10 +1,10 @@
 package langdet_test
 
 import (
-	. "github.com/smartystreets/goconvey/convey"
 	"github.com/chrisport/go-lang-detector/langdet"
+	. "github.com/smartystreets/goconvey/convey"
 	"testing"
-	"strings"
+	"github.com/chrisport/go-lang-detector/langdet/langdetdef"
 )
 
 func createMapRanking(tokensInRank ...string) map[string]int {
@@ -17,7 +17,7 @@ func createMapRanking(tokensInRank ...string) map[string]int {
 
 func TestNew(t *testing.T) {
 	Convey("Subject: New detector", t, func() {
-		dd := langdet.NewDefaultLanguages()
+		dd := langdetdef.NewWithDefaultLanguages()
 		d := langdet.NewDetector()
 		Convey("Detector should be initialized", func() {
 			So(d.Languages, ShouldNotBeNil)
@@ -25,26 +25,9 @@ func TestNew(t *testing.T) {
 		})
 	})
 	Convey("Subject: New detector with default languages", t, func() {
-		_ = langdet.NewDefaultLanguages()
 		d := langdet.NewDetector()
 		Convey("Detector should be initialized", func() {
 			So(d.Languages, ShouldNotBeNil)
-		})
-	})
-	Convey("Subject: New detector with languages from reader", t, func() {
-		languageMapAsJson := "[{\"Profile\":{\"____t\":1,\"___t\":3,\"___t_\":5,\"__t\":7,\"__t_\":6,\"__t__\":9,\"_t\":15,\"_t_\":12,\"_t__\":2,\"_t___\":11,\"t\":4,\"t_\":8,\"t__\":14,\"t___\":13,\"t____\":10},\"Name\":\"english\"}]"
-		reader := strings.NewReader(languageMapAsJson)
-		d := langdet.NewWithLanguagesFromReader(reader)
-		Convey("Detector should be initialized", func() {
-			So(d.Languages, ShouldNotBeNil)
-		})
-	})
-	Convey("Subject: Initialize DefaultLanguage with languages from reader", t, func() {
-		languageMapAsJson := "[{\"Profile\":{\"____t\":1,\"___t\":3,\"___t_\":5,\"__t\":7,\"__t_\":6,\"__t__\":9,\"_t\":15,\"_t_\":12,\"_t__\":2,\"_t___\":11,\"t\":4,\"t_\":8,\"t__\":14,\"t___\":13,\"t____\":10},\"Name\":\"english\"}]"
-		reader := strings.NewReader(languageMapAsJson)
-		langdet.InitWithDefaultFromReader(reader)
-		Convey("Detector should be initialized", func() {
-			So(langdet.DefaultDetector.Languages, ShouldNotBeNil)
 		})
 	})
 }
@@ -59,8 +42,8 @@ func TestAddLanguage(t *testing.T) {
 
 		Convey("Detector should get initialized and the language should be added", func() {
 			So(d.Languages, ShouldNotBeNil)
-			So(len(*d.Languages), ShouldEqual, 1)
-			So((*d.Languages)[0].Name, ShouldEqual, "en")
+			So(len(d.Languages), ShouldEqual, 1)
+			So((d.Languages)[0].GetName(), ShouldEqual, "en")
 		})
 	})
 	Convey("Subject: Add Language directly to new Detector", t, func() {
@@ -71,8 +54,8 @@ func TestAddLanguage(t *testing.T) {
 
 		Convey("Detector should get initialized and the language should be added", func() {
 			So(d.Languages, ShouldNotBeNil)
-			So(len(*d.Languages), ShouldEqual, 1)
-			So((*d.Languages)[0].Name, ShouldEqual, "en")
+			So(len(d.Languages), ShouldEqual, 1)
+			So((d.Languages)[0].GetName(), ShouldEqual, "en")
 		})
 	})
 }
