@@ -12,8 +12,12 @@ import (
 // -1 for no maximum
 var maxSampleSize = 10000
 
-// Analyze creates the language profile from a given Text and returns it in a Language struct.
 func Analyze(text, name string) Language {
+	return AnalyzeWithNDepth(text, name, DEFAULT_NDEPTH)
+}
+
+// Analyze creates the language profile from a given Text and returns it in a Language struct.
+func AnalyzeWithNDepth(text, name string, nDepth int) Language {
 	theMap := CreateOccurenceMap(text, nDepth)
 	ranked := CreateRankLookupMap(theMap)
 	return Language{Name: name, Profile: ranked}
@@ -69,7 +73,7 @@ func generateNthGrams(resultMap map[string]int, text string, n int) {
 	text = padding + text + padding
 	upperBound := utf8.RuneCountInString(text) - (n - 1)
 	for p := 0; p < upperBound; p++ {
-		currentToken := text[p : p+n]
+		currentToken := text[p: p+n]
 		resultMap[currentToken] += 1
 	}
 }

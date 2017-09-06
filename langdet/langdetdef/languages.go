@@ -19,8 +19,6 @@ func init() {
 	//TODO handle error case?
 	_ = json.Unmarshal(def, &lan)
 
-
-
 	for i := range lan {
 		switch lan[i].Name {
 		case "russian":
@@ -58,7 +56,9 @@ func DefaultLanguages() []langdet.LanguageComparator {
 // NewWithDefaultLanguages returns a new Detector with the default languages, if loaded:
 // currently: Arabic, English, French, German, Hebrew, Russian, Turkish, Chinese
 func NewWithDefaultLanguages() langdet.Detector {
-	return langdet.Detector{Languages: DefaultLanguages(), MinimumConfidence: langdet.DefaultMinimumConfidence}
+	return langdet.Detector{Languages: DefaultLanguages(),
+		MinimumConfidence: langdet.DefaultMinimumConfidence,
+		NDepth: langdet.DEFAULT_NDEPTH}
 }
 
 var defaultLanguages = make(map[string]langdet.LanguageComparator)

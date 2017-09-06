@@ -5,8 +5,8 @@ import (
 	"sort"
 )
 
-// the depth of n-gram tokens that are created. if nDepth=1, only 1-letter tokens are created
-const nDepth = 4
+// the depth of n-gram tokens that are created. if DEFAULT_NDEPTH=1, only 1-letter tokens are created
+const DEFAULT_NDEPTH = 4
 
 // DefaultMinimumConfidence is the minimum confidence that a language-match must have to be returned as detected language
 var DefaultMinimumConfidence float32 = 0.7
@@ -15,12 +15,13 @@ var DefaultMinimumConfidence float32 = 0.7
 type Detector struct {
 	Languages         []LanguageComparator
 	MinimumConfidence float32
+	NDepth            int
 }
 
 // NewDetector returns a new Detector without any language.
 // It can be used to add languages selectively.
 func NewDetector() Detector {
-	return Detector{[]LanguageComparator{}, DefaultMinimumConfidence}
+	return Detector{[]LanguageComparator{}, DefaultMinimumConfidence, DEFAULT_NDEPTH}
 }
 
 // Add language analyzes a text and creates a new Language with given name.
@@ -64,7 +65,7 @@ func (d *Detector) GetClosestLanguage(text string) string {
 		log.Println("no languages configured for this detector")
 		return "undefined"
 	}
-	lmap := lazyLookupMap(text, nDepth)
+	lmap := lazyLookupMap(text, d.NDepth)
 	c := d.closestFromTable(lmap, text)
 
 	if len(c) == 0 || c[0].Confidence < asPercent(d.MinimumConfidence) {
@@ -86,7 +87,7 @@ var lazyLookupMap = func(text string, nDepth int) func() map[string]int {
 
 // GetLanguages analyzes a text and returns the DetectionResult of all languages of this detector.
 func (d *Detector) GetLanguages(text string) []DetectionResult {
-	lazyLookupMap := lazyLookupMap(text, nDepth)
+	lazyLookupMap := lazyLookupMap(text, d.NDepth)
 	results := d.closestFromTable(lazyLookupMap, text)
 	return results
 }
