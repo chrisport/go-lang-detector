@@ -1,7 +1,7 @@
 [![wercker status](https://app.wercker.com/status/9e2a695f35c1cf5e1cac46035e4ca7a6/m/ "wercker status")](https://app.wercker.com/project/byKey/9e2a695f35c1cf5e1cac46035e4ca7a6)
 [![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
 
-Breaking changes in v1.0: please see chapter "Migration" below.
+Breaking changes in v0.2: please see chapter "Migration" below.
 Previous version is available under Release v0.1: https://github.com/chrisport/go-lang-detector/releases/tag/v0.1
 
 # Language Detector
@@ -94,7 +94,7 @@ Alternatively Analyze can be used and the resulting language can added using Add
     detectorC.AddLanguage(french)
 ```
 
-## Migration to v1.0
+## Migration to v0.2
 
 This library has been adapted to a more convenient and more idiomatic way.
 - Default languages are provided in Go code and there is no need for adding the json file anymore.
