@@ -104,7 +104,7 @@ func (d *Detector) closestFromTable(lookupMap func() map[string]int, originalInp
 	return res
 }
 
-// CompareTo calculates the out-of-place distance between two Profiles,
+// GetDistance calculates the out-of-place distance between two Profiles,
 // taking into account only items of mapA, that have a value bigger then 300
 func GetDistance(mapA, mapB map[string]int, maxDist int) int {
 	var result int

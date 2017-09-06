@@ -17,6 +17,13 @@ Ann Arbor MI 48113-4001
 A language profile is a ```map[string] int```that maps n-gram tokens to its occurrency-rank. So for the most
 frequent token 'X' of the analyzed text, map['X'] will be 1.
 
+### Detection by unicode range
+A second way to detect the language is by the unicode range used in the text.
+Golang has a set of predefined unicode ranges in package unicode, which can be used
+easily, for example for detecting Chinese/Japanese/Korean:
+``` go
+var CHINESE_JAPANESE_KOREAN = &langdet.UnicodeRangeLanguageComparator{"CJK", unicode.Han}
+```
 ## Usage
 ### Detect
 #### Get the closest language:
@@ -90,8 +97,28 @@ Alternatively Analyze can be used and the resulting language can added using Add
 
 This library has been adapted to a more convenient and more idiomatic way.
 - Default languages are provided in Go code and there is no need for adding the json file anymore.
-- If you provide your own custom default.json, please do so through the corresponding methods InitWithDefault
-- InitWithDefaultFromFile has been removed, please use InitDefaultsFromReader instead
+- All code related to defaults has been moved to package langdetdef
+- Default languages can be added using the provided interfaces:
+``` go
+// detector with default languages
+detector := langdetdef.NewWithDefaultLanguages()
+
+// add all to existing detector
+defaults := langdetdef.DefaultLanguages()
+detector.AddLanguageComparators(defaults...)
+
+// add selectively
+detector.AddLanguageComparators(langdetdef.CHINESE_JAPANESE_KOREAN, langdetdef.ENGLISH)
+```
+- InitWithDefaultFromXY has been removed, custom default languages can be unmarshaled manually and added to a detector through
+AddLanguage interface:
+```
+detector := langdet.NewDetector()
+customLanguages := []langdet.Language{}
+
+_ = json.Unmarshal(bytesFromFile, &customLanguages)
+detector.AddLanguage(customLanguages...)
+```
 
 ## Contribution
 

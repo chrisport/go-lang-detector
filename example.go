@@ -22,4 +22,5 @@ func main() {
 	for _, r := range fullResults {
 		fmt.Println("    ", r.Name, r.Confidence, "%")
 	}
+
 }
