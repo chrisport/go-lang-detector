@@ -2,6 +2,7 @@
 [![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
 
 Breaking changes in v1.0: please see chapter "Migration" below.
+Previous version is available under Release v0.1: https://github.com/chrisport/go-lang-detector/releases/tag/v0.1
 
 # Language Detector
 
