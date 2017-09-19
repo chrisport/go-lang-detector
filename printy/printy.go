@@ -20,7 +20,7 @@ func JsonReader(r io.Reader, pretty bool) {
 func JsonBytes(bytes []byte, pretty bool) {
 	var t map[string]interface{}
 	err := json.Unmarshal(bytes, &t)
-	if err != nil {
+	if noError(err) {
 		AsJson(t, pretty)
 	}
 }
