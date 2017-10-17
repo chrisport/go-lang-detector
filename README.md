@@ -14,7 +14,7 @@ William B. Cavnar and John M. Trenkle
 Environmental Research Institute of Michigan P.O. Box 134001  
 Ann Arbor MI 48113-4001
 
-### Language profile
+### Detection by Language profile
 A language profile is a ```map[string] int```that maps n-gram tokens to its occurrency-rank. So for the most
 frequent token 'X' of the analyzed text, map['X'] will be 1.
 
@@ -32,7 +32,7 @@ The default detector supports the following languages:
 **Arabic, English, French, German, Hebrew, Russian, Turkish**
 
 ``` go
-    detector := langdet.NewDefaultLanguages()
+    detector := langdet.NewWithDefaultLanguages()
 	testString := "do not care about quantity"
 	result := detector.GetClosestLanguage(testString)
 	fmt.Println(result)
