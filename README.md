@@ -32,7 +32,7 @@ The default detector supports the following languages:
 **Arabic, English, French, German, Hebrew, Russian, Turkish**
 
 ``` go
-    detector := langdet.NewWithDefaultLanguages()
+    detector := langdetdef.NewWithDefaultLanguages()
 	testString := "do not care about quantity"
 	result := detector.GetClosestLanguage(testString)
 	fmt.Println(result)
