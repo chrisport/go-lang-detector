@@ -1,11 +1,11 @@
 package benchme
 
 import (
-	"net/http"
 	"github.com/rcrowley/go-metrics"
-	"time"
-	"log"
 	"io"
+	"log"
+	"net/http"
+	"time"
 )
 
 func NewHttpBenchmark(name string, reqProvider func() *http.Request) HttpBenchmark {

@@ -1,13 +1,13 @@
 package printy
 
 import (
-	"net/http/httputil"
-	"net/http"
-	"fmt"
 	"encoding/json"
-	"os"
-	"io/ioutil"
+	"fmt"
 	"io"
+	"io/ioutil"
+	"net/http"
+	"net/http/httputil"
+	"os"
 )
 
 func JsonReader(r io.Reader, pretty bool) {
