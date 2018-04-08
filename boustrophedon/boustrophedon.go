@@ -1,18 +1,9 @@
-package main
+package boustrophedon
 
 import (
 	"strings"
-	"fmt"
 )
 
-var testText = `A modern example of boustrophedonics is the numbering scheme of sections within survey townships
-in the United States and Canada. In both countries, survey townships are divided into a 6-by-6 grid
-of 36 sections. In the U.S. Public Land Survey System, Section 1 of a township is in the northeast
-corner, and the numbering proceeds boustrophedonically until Section 36 is reached in the southeast
-corner.[8] Canada's Dominion Land Survey also uses boustrophedonic numbering, but starts at the southeast
-corner.[9]
-Source: https://en.wikipedia.org/wiki/Boustrophedon
-`
 
 var lookup = make(map[rune]rune)
 
@@ -24,16 +15,13 @@ func init() {
 	}
 }
 
-func main() {
-	fmt.Println(testText)
-	fmt.Println(Boustrophedon(testText, false))
-	fmt.Println(Boustrophedon(testText, true))
-}
-
-func Boustrophedon(s string, mirrorLetters bool) string {
-	apply := Reverse
+// Returns the boustrophedon of provided string, processed per line
+// If mirrorLetters is true, all letters will be replaced with its pseudo mirrored version, which is another rune
+// that resembles closely to the mirroring of the specific rune.
+func ApplyToText(s string, mirrorLetters bool) string {
+	apply := reverse
 	if mirrorLetters {
-		apply = ReverseMirrored
+		apply = reverseMirrored
 	}
 
 	lines := strings.Split(s, "\n")
@@ -45,7 +33,7 @@ func Boustrophedon(s string, mirrorLetters bool) string {
 	return strings.Join(lines, "\n")
 }
 
-func Reverse(s string) string {
+func reverse(s string) string {
 	var reverse string
 	for i := len(s) - 1; i >= 0; i-- {
 		reverse += string(s[i])
@@ -53,7 +41,7 @@ func Reverse(s string) string {
 	return reverse
 }
 
-func ReverseMirrored(s string) string {
+func reverseMirrored(s string) string {
 	runes := []rune(s)
 	for i, j := 0, len(runes)-1; i < j; i, j = i+1, j-1 {
 		if k, ok := lookup[runes[i]]; ok {
