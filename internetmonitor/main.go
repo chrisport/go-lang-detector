@@ -14,18 +14,18 @@ func main() {
 	fmt.Printf("time\t\tstatus\tlast\ttotal\n")
 	totalOfflineTime := time.Second * 0
 	for {
+		time.Sleep(5 * time.Second)
+
 		t := time.Now()
 		err := testConnection()
 		stat := "offline"
 		if err == nil {
 			stat = "online"
 			lastOnline = t
-		}
-		fmt.Printf("%v\t%v\t%vs\t%v\n", t.Format(timeFormat), stat, t.Sub(lastOnline).Truncate(time.Second).Seconds(), totalOfflineTime)
-		if err !=nil {
+		} else {
 			totalOfflineTime = totalOfflineTime + 5*time.Second
 		}
-		time.Sleep(5 * time.Second)
+		fmt.Printf("%v\t%v\t%vs\t%v\n", t.Format(timeFormat), stat, t.Sub(lastOnline).Truncate(time.Second).Seconds(), totalOfflineTime)
 	}
 }
 
