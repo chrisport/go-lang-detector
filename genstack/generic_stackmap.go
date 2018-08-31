@@ -7,6 +7,9 @@ import (
 
 type StackMap map[string][]interface{}
 
+func (s StackMap) Len(key string) int {
+	return len(s[key])
+}
 func (s StackMap) Push(key string, st interface{}) {
 	_, ok := s[key]
 	if !ok {
@@ -28,6 +31,14 @@ func (s StackMap) PopOrDefault(key string, defaultValue interface{}) interface{}
 
 func (s StackMap) Pop(key string) interface{} {
 	return s.PopOrDefault(key, nil)
+}
+
+func (s StackMap) PeekOrDefault(key string, defaultValue interface{}) interface{} {
+	a := s[key]
+	if len(a) == 0 {
+		return defaultValue
+	}
+	return a[len(s[key])-1]
 }
 
 func (s StackMap) Peek(key string) interface{} {

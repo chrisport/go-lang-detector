@@ -23,6 +23,25 @@ func TestGivenStack_whenPeek_thenReturnLastInserted(t *testing.T) {
 	assert.Equal(t, prop, sampleProp1)
 }
 
+func TestGivenInexistingStack_whenPeekOrDefault_thenReturnDefault(t *testing.T) {
+	s := make(StackMap, 0)
+	s.Push("prop", sampleProp0)
+
+	res := s.PeekOrDefault("non-existing_stack", sampleProp1)
+
+	assert.Equal(t, res, sampleProp1)
+}
+
+func TestGivenSampleStack_whenPeekOrDefault_thenReturnDefault(t *testing.T) {
+	s := make(StackMap, 0)
+	s.Push("prop", sampleProp0)
+
+	res := s.PeekOrDefault("prop", sampleProp1)
+
+
+	assert.Equal(t, res , sampleProp0)
+}
+
 func TestGivenStackOncePopped_whenPop_thenReturnLastInserted(t *testing.T) {
 	s := make(StackMap, 0)
 	s.Push("prop", sampleProp0)
@@ -67,6 +86,20 @@ func TestSampleTypeStack_whenPopAll_thenFillArrayWithAllElements(t *testing.T) {
 	assert.Equal(t, allProps[1], sampleProp1)
 }
 
+func TestSampleTypeStackWith5Elements_whenLen_thenReturn5(t *testing.T) {
+	s := make(StackMap, 0)
+	s.Push("sampleStack", sampleProp0)
+	s.Push("sampleStack", sampleProp0)
+	s.Push("sampleStack", sampleProp0)
+	s.Push("sampleStack", sampleProp0)
+	s.Push("sampleStack", sampleProp0)
+
+	res := s.Len("sampleStack")
+
+	assert.Equal(t, res, 5)
+	assert.Equal(t, res, len(s["sampleStack"]))
+}
+
 func TestSampleTypeStack_whenPopAllWithWrongArrayType_thenPanic(t *testing.T) {
 	defer func() {
 		if r := recover(); r == nil {
@@ -82,6 +115,7 @@ func TestSampleTypeStack_whenPopAllWithWrongArrayType_thenPanic(t *testing.T) {
 
 	// must panic
 }
+
 func TestSampleTypeStack_whenPopAllWithWrongType_thenPanic(t *testing.T) {
 	defer func() {
 		if r := recover(); r == nil {
