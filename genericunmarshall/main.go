@@ -7,14 +7,14 @@ import (
 	"time"
 )
 
-type CustomMessage struct {
+type CustomMsg struct {
 	Msg string
 	Id  int
 }
 
 func main() {
 	processor := TestProcessor{}
-	msg := CustomMessage{
+	msg := CustomMsg{
 		Msg: "TEST",
 		Id:  1,
 	}
@@ -47,7 +47,7 @@ type TestProcessor struct {
 }
 
 func (t *TestProcessor) process(input interface{}) {
-	inputMessage := input.(*CustomMessage)
+	inputMessage := input.(*CustomMsg)
 
 	if inputMessage.Msg != "TEST" || inputMessage.Id != 1 {
 		panic("FML")
@@ -55,5 +55,5 @@ func (t *TestProcessor) process(input interface{}) {
 }
 
 func (t *TestProcessor) getType() reflect.Type {
-	return reflect.TypeOf(CustomMessage{})
+	return reflect.TypeOf(CustomMsg{})
 }

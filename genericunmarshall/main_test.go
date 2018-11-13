@@ -8,7 +8,7 @@ import (
 
 func Benchmark_ReflectiveUnmarshall(b *testing.B) {
 	processor := TestProcessor{}
-	msg := CustomMessage{
+	msg := CustomMsg{
 		Msg: "TEST",
 		Id:  1,
 	}
@@ -24,7 +24,7 @@ func Benchmark_ReflectiveUnmarshall(b *testing.B) {
 }
 
 func Benchmark_NormalUnmarshall(b *testing.B) {
-	msg := CustomMessage{
+	msg := CustomMsg{
 		Msg: "TEST",
 		Id:  1,
 	}
@@ -32,7 +32,7 @@ func Benchmark_NormalUnmarshall(b *testing.B) {
 	panicOnErr(err)
 
 	for i := 0; i < b.N; i++ {
-		var targetInstance = &CustomMessage{}
+		var targetInstance = &CustomMsg{}
 		err = json.Unmarshal(data, targetInstance)
 		panicOnErr(err)
 	}
