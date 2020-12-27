@@ -8,6 +8,9 @@ import (
 // the depth of n-gram tokens that are created. if DEFAULT_NDEPTH=1, only 1-letter tokens are created
 const DEFAULT_NDEPTH = 4
 
+// the maximum rank to consider for the base language
+const DEFAULT_MAXRANK = 300
+
 // DefaultMinimumConfidence is the minimum confidence that a language-match must have to be returned as detected language
 var DefaultMinimumConfidence float32 = 0.7
 
@@ -16,12 +19,13 @@ type Detector struct {
 	Languages         []LanguageComparator
 	MinimumConfidence float32
 	NDepth            int
+	MaxRank           int
 }
 
 // NewDetector returns a new Detector without any language.
 // It can be used to add languages selectively.
 func NewDetector() Detector {
-	return Detector{[]LanguageComparator{}, DefaultMinimumConfidence, DEFAULT_NDEPTH}
+	return Detector{[]LanguageComparator{}, DefaultMinimumConfidence, DEFAULT_NDEPTH, DEFAULT_MAXRANK}
 }
 
 // Add language analyzes a text and creates a new Language with given name.
@@ -98,7 +102,7 @@ func (d *Detector) closestFromTable(lookupMap func() map[string]int, originalInp
 	res := []DetectionResult{}
 
 	for _, language := range d.Languages {
-		res = append(res, language.CompareTo(lookupMap, originalInput))
+		res = append(res, language.CompareTo(lookupMap, originalInput, d.MaxRank))
 	}
 
 	sort.Sort(ResByConf(res))
@@ -106,12 +110,12 @@ func (d *Detector) closestFromTable(lookupMap func() map[string]int, originalInp
 }
 
 // GetDistance calculates the out-of-place distance between two Profiles,
-// taking into account only items of mapA, that have a value bigger then 300
-func GetDistance(mapA, mapB map[string]int, maxDist int) int {
+// taking into account only items of mapA, that have a rank 1 to maxRank
+func GetDistance(mapA, mapB map[string]int, maxDist int, maxRank int) int {
 	var result int
 	negMaxDist := (-1) * maxDist
 	for key, rankA := range mapA {
-		if rankA > 300 {
+		if rankA > maxRank {
 			continue
 		}
 		var diff int

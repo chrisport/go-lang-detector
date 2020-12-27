@@ -2,9 +2,9 @@ package langdet_test
 
 import (
 	"github.com/chrisport/go-lang-detector/langdet"
+	"github.com/chrisport/go-lang-detector/langdet/langdetdef"
 	. "github.com/smartystreets/goconvey/convey"
 	"testing"
-	"github.com/chrisport/go-lang-detector/langdet/langdetdef"
 )
 
 func createMapRanking(tokensInRank ...string) map[string]int {
@@ -109,28 +109,28 @@ func TestGetDistance(t *testing.T) {
 		Convey("same profiles should return distance 0", func() {
 			rankMapA := createMapRanking("a", "b", "c")
 			rankMapB := createMapRanking("a", "b", "c")
-			dist := langdet.GetDistance(rankMapA, rankMapB, 10)
+			dist := langdet.GetDistance(rankMapA, rankMapB, 10, 300)
 			So(dist, ShouldBeZeroValue)
 		})
 
 		Convey("same profiles with 1 rank swapped should return distance 2", func() {
 			rankMapA := createMapRanking("a", "b", "c")
 			rankMapB := createMapRanking("a", "c", "b")
-			dist := langdet.GetDistance(rankMapA, rankMapB, 10)
+			dist := langdet.GetDistance(rankMapA, rankMapB, 10, 300)
 			So(dist, ShouldEqual, 2)
 		})
 
 		Convey("same profiles except 1 token different should return distance 10 when maxDifference is 10", func() {
 			rankMapA := createMapRanking("a", "b", "c")
 			rankMapB := createMapRanking("a", "b", "d")
-			dist := langdet.GetDistance(rankMapA, rankMapB, 10)
+			dist := langdet.GetDistance(rankMapA, rankMapB, 10, 300)
 			So(dist, ShouldEqual, 10)
 		})
 
 		Convey("entirely different profiles with 3 tokens should return distance 30 if maxDistance is set to 10", func() {
 			rankMapA := createMapRanking("a", "b", "c")
 			rankMapB := createMapRanking("e", "f", "g")
-			dist := langdet.GetDistance(rankMapA, rankMapB, 10)
+			dist := langdet.GetDistance(rankMapA, rankMapB, 10, 300)
 			So(dist, ShouldEqual, 30)
 
 		})

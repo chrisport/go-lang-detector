@@ -9,9 +9,10 @@ import (
 type mockComparator struct {
 }
 
-func (f *mockComparator) CompareTo(lazyLookupMap func() map[string]int, originalText string) DetectionResult {
+func (f *mockComparator) CompareTo(lazyLookupMap func() map[string]int, originalText string, maxRank int) DetectionResult {
 	return DetectionResult{"fake", 99}
 }
+
 func (f *mockComparator) GetName() string { return "fake" }
 
 func TestLanguageComparator(t *testing.T) {

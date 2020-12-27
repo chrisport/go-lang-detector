@@ -1,49 +1,54 @@
 {
 	"ImportPath": "github.com/chrisport/go-lang-detector",
-	"GoVersion": "go1.9",
-	"GodepVersion": "v79",
+	"GoVersion": "go1.15",
+	"GodepVersion": "v80",
 	"Packages": [
 		"./..."
 	],
 	"Deps": [
 		{
 			"ImportPath": "github.com/gopherjs/gopherjs/js",
-			"Rev": "444abdf920945de5d4a977b572bcc6c674d1e4eb"
+			"Rev": "fce0ec30dd00773d3fa974351d04ce2737b5c4d9"
 		},
 		{
 			"ImportPath": "github.com/jtolds/gls",
-			"Comment": "v4.2.1",
-			"Rev": "77f18212c9c7edc9bd6a33d383a7b545ce62f064"
+			"Comment": "v4.20",
+			"Rev": "b4936e06046bbecbb94cae9c18127ebe510a2cb9"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/assertions",
-			"Comment": "1.8.1",
-			"Rev": "0b37b35ec7434b77e77a4bb29b79677cced992ea"
+			"Comment": "v1.2.0",
+			"Rev": "a2ad282d643d747de44bfe6deaca88113a257e04"
+		},
+		{
+			"ImportPath": "github.com/smartystreets/assertions/internal/go-diff/diffmatchpatch",
+			"Comment": "v1.2.0",
+			"Rev": "a2ad282d643d747de44bfe6deaca88113a257e04"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/assertions/internal/go-render/render",
-			"Comment": "1.8.1",
-			"Rev": "0b37b35ec7434b77e77a4bb29b79677cced992ea"
+			"Comment": "v1.2.0",
+			"Rev": "a2ad282d643d747de44bfe6deaca88113a257e04"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/assertions/internal/oglematchers",
-			"Comment": "1.8.1",
-			"Rev": "0b37b35ec7434b77e77a4bb29b79677cced992ea"
+			"Comment": "v1.2.0",
+			"Rev": "a2ad282d643d747de44bfe6deaca88113a257e04"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/goconvey/convey",
-			"Comment": "1.6.3-2-ge5b2b7c",
-			"Rev": "e5b2b7c9111590d019a696c7800593f666e1a7f4"
+			"Comment": "v1.6.4-4-g7827743",
+			"Rev": "7827743f8d22163fcdccb373dfb65526419cea56"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/goconvey/convey/gotest",
-			"Comment": "1.6.3-2-ge5b2b7c",
-			"Rev": "e5b2b7c9111590d019a696c7800593f666e1a7f4"
+			"Comment": "v1.6.4-4-g7827743",
+			"Rev": "7827743f8d22163fcdccb373dfb65526419cea56"
 		},
 		{
 			"ImportPath": "github.com/smartystreets/goconvey/convey/reporting",
-			"Comment": "1.6.3-2-ge5b2b7c",
-			"Rev": "e5b2b7c9111590d019a696c7800593f666e1a7f4"
+			"Comment": "v1.6.4-4-g7827743",
+			"Rev": "7827743f8d22163fcdccb373dfb65526419cea56"
 		}
 	]
 }

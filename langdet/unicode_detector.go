@@ -1,8 +1,8 @@
 package langdet
 
 import (
-	"unicode/utf8"
 	"unicode"
+	"unicode/utf8"
 )
 
 // Chinese, Japanese, Korean Charset
@@ -15,7 +15,7 @@ func (u *UnicodeRangeLanguageComparator) GetName() string {
 	return u.Name
 }
 
-func (u *UnicodeRangeLanguageComparator) CompareTo(_ func() map[string]int, originalInput string) DetectionResult {
+func (u *UnicodeRangeLanguageComparator) CompareTo(_ func() map[string]int, originalInput string, _ int) DetectionResult {
 	fl := utf8.RuneCountInString(originalInput)
 	cc := 0
 	for _, r := range originalInput {

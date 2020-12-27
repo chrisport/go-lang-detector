@@ -20,7 +20,7 @@ func (a ByOccurrence) Less(i, j int) bool {
 
 // Language represents a language by its name and the profile ( map[token]OccurrenceRank )
 type LanguageComparator interface {
-	CompareTo(lazyLookupMap func() map[string]int, originalText string) DetectionResult
+	CompareTo(lazyLookupMap func() map[string]int, originalText string, maxRank int) DetectionResult
 	GetName() string
 }
 
@@ -32,7 +32,7 @@ type Language struct {
 func (l *Language) GetName() string {
 	return l.Name
 }
-func (l *Language) CompareTo(lazyLookupMap func() map[string]int, originaltext string) DetectionResult {
+func (l *Language) CompareTo(lazyLookupMap func() map[string]int, originaltext string, maxRank int) DetectionResult {
 	lookupMap := lazyLookupMap()
 	inputSize := len(lookupMap)
 	if inputSize > 300 {
@@ -41,7 +41,7 @@ func (l *Language) CompareTo(lazyLookupMap func() map[string]int, originaltext s
 	lSize := len(l.Profile)
 
 	maxPossibleDistance := lSize * len(lookupMap)
-	dist := GetDistance(lookupMap, l.Profile, lSize)
+	dist := GetDistance(lookupMap, l.Profile, lSize, maxRank)
 	relativeDistance := 1 - float64(dist)/float64(maxPossibleDistance)
 	confidence := int(relativeDistance * 100)
 
