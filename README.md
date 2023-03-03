@@ -1,3 +1,8 @@
+# This library is not actively maintained
+
+Unfortunately it is not possible for me to continue maintaining this library at the moment.
+Please feel free to make pull requests and I will do my best to merge them.
+
 [![wercker status](https://app.wercker.com/status/9e2a695f35c1cf5e1cac46035e4ca7a6/s/master "wercker status")](https://app.wercker.com/project/byKey/9e2a695f35c1cf5e1cac46035e4ca7a6)
 [![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
 
