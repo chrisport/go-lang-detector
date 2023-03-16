@@ -1,6 +1,7 @@
 package langdet
 
 import (
+	"bufio"
 	"bytes"
 	"sort"
 	"strings"
@@ -47,11 +48,13 @@ func CreateRankLookupMap(input map[string]int) map[string]int {
 // CreateOccurenceMap creates a map[token]occurrence from a given text and up to a given gram depth
 // gramDepth=1 means only 1-letter tokens are created, gramDepth=2 means 1- and 2-letters token are created, etc.
 func CreateOccurenceMap(text string, gramDepth int) map[string]int {
-	text = cleanText(text)
-	tokens := strings.Split(text, " ")
+	text = cleaner.Replace(text)
+	scanner := bufio.NewScanner(strings.NewReader(text))
+	scanner.Split(bufio.ScanWords)
+
 	result := make(map[string]int)
-	for _, token := range tokens {
-		analyseToken(result, token, gramDepth)
+	for scanner.Scan() {
+		analyseToken(result, scanner.Text(), gramDepth)
 	}
 	return result
 }
@@ -73,7 +76,7 @@ func generateNthGrams(resultMap map[string]int, text string, n int) {
 	text = padding + text + padding
 	upperBound := utf8.RuneCountInString(text) - (n - 1)
 	for p := 0; p < upperBound; p++ {
-		currentToken := text[p: p+n]
+		currentToken := text[p : p+n]
 		resultMap[currentToken] += 1
 	}
 }
@@ -88,33 +91,32 @@ func createPadding(length int) string {
 	return buffer.String()
 }
 
-// cleanText removes newlines, special characters and numbers from a input text
-func cleanText(text string) string {
-	text = strings.Replace(text, "\n", " ", -1)
-	text = strings.Replace(text, ",", " ", -1)
-	text = strings.Replace(text, "#", " ", -1)
-	text = strings.Replace(text, "/", " ", -1)
-	text = strings.Replace(text, "\\", " ", -1)
-	text = strings.Replace(text, ".", " ", -1)
-	text = strings.Replace(text, "!", " ", -1)
-	text = strings.Replace(text, "?", " ", -1)
-	text = strings.Replace(text, ":", " ", -1)
-	text = strings.Replace(text, ";", " ", -1)
-	text = strings.Replace(text, "-", " ", -1)
-	text = strings.Replace(text, "'", " ", -1)
-	text = strings.Replace(text, "\"", " ", -1)
-	text = strings.Replace(text, "_", " ", -1)
-	text = strings.Replace(text, "*", " ", -1)
-	text = strings.Replace(text, "1", "", -1)
-	text = strings.Replace(text, "2", "", -1)
-	text = strings.Replace(text, "3", "", -1)
-	text = strings.Replace(text, "4", "", -1)
-	text = strings.Replace(text, "5", "", -1)
-	text = strings.Replace(text, "6", "", -1)
-	text = strings.Replace(text, "7", "", -1)
-	text = strings.Replace(text, "8", "", -1)
-	text = strings.Replace(text, "9", "", -1)
-	text = strings.Replace(text, "0", "", -1)
-	text = strings.Replace(text, "  ", " ", -1)
-	return text
-}
+// cleaner removes newlines, special characters and numbers from an input text
+var cleaner = strings.NewReplacer(
+	"\n", " ",
+	",", " ",
+	"#", " ",
+	"/", " ",
+	`\`, " ",
+	".", " ",
+	"!", " ",
+	"?", " ",
+	":", " ",
+	";", " ",
+	"-", " ",
+	"'", " ",
+	`"`, " ",
+	"_", " ",
+	"*", " ",
+	"1", "",
+	"2", "",
+	"3", "",
+	"4", "",
+	"5", "",
+	"6", "",
+	"7", "",
+	"8", "",
+	"9", "",
+	"0", "",
+	"  ", " ",
+)

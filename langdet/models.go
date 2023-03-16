@@ -55,7 +55,7 @@ type DetectionResult struct {
 	Confidence int
 }
 
-//ResByConf represents an array of DetectionResult and can be sorted by Confidence.
+// ResByConf represents an array of DetectionResult and can be sorted by Confidence.
 type ResByConf []DetectionResult
 
 func (a ResByConf) Len() int           { return len(a) }
