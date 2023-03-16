@@ -5,6 +5,7 @@ Please feel free to make pull requests and I will do my best to merge them.
 
 [![Go Reference](https://pkg.go.dev/badge/github.com/chrisport/go-lang-detector.svg)](https://pkg.go.dev/github.com/chrisport/go-lang-detector)
 [![BuildStatus](https://github.com/chrisport/go-lang-detector/actions/workflows/test.yml/badge.svg)
+[![Coverage](https://github.com/chrisport/go-lang-detector/wiki/coverage.svg)](https://raw.githack.com/wiki/chrisport/go-lang-detector/coverage.html)
 [![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Breaking changes in v0.2: please see chapter "Migration" below.
