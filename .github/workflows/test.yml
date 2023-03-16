@@ -8,8 +8,17 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
     runs-on: ${{ matrix.os }}
     steps:
-      - uses: actions/setup-go@v3
+      - name: Setup
+        uses: actions/setup-go@v3
         with:
           go-version: ${{ matrix.go-version }}
-      - uses: actions/checkout@v3
-      - run: go test ./...
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Test
+        run: go test ./...
+      - name: Update Coverage
+        uses: ncruces/go-coverage-report@main
+        if: |
+          matrix.os == 'ubuntu-latest' &&
+          github.event_name == 'push'
+        continue-on-error: true
