@@ -3,8 +3,9 @@
 Unfortunately it is not possible for me to continue maintaining this library at the moment.
 Please feel free to make pull requests and I will do my best to merge them.
 
-[![wercker status](https://app.wercker.com/status/9e2a695f35c1cf5e1cac46035e4ca7a6/s/master "wercker status")](https://app.wercker.com/project/byKey/9e2a695f35c1cf5e1cac46035e4ca7a6)
-[![Coverage Status](https://img.shields.io/coveralls/chrisport/go-lang-detector.svg)](https://coveralls.io/r/chrisport/go-lang-detector?branch=master)
+[![Go Reference](https://pkg.go.dev/badge/github.com/chrisport/go-lang-detector.svg)](https://pkg.go.dev/github.com/chrisport/go-lang-detector)
+[![BuildStatus](https://github.com/chrisport/go-lang-detector/actions/workflows/test.yml/badge.svg)
+[![License](https://img.shields.io/badge/License-Apache_2.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 
 Breaking changes in v0.2: please see chapter "Migration" below.
 Previous version is available under Release v0.1: https://github.com/chrisport/go-lang-detector/releases/tag/v0.1
@@ -13,10 +14,10 @@ Previous version is available under Release v0.1: https://github.com/chrisport/g
 
 This golang library provides functionality to analyze and recognize language based on text.
 
-The implementation is based on the following paper:  
-N-Gram-Based Text Categorization  
-William B. Cavnar and John M. Trenkle  
-Environmental Research Institute of Michigan P.O. Box 134001  
+The implementation is based on the following paper:
+N-Gram-Based Text Categorization
+William B. Cavnar and John M. Trenkle
+Environmental Research Institute of Michigan P.O. Box 134001
 Ann Arbor MI 48113-4001
 
 ### Detection by Language profile
