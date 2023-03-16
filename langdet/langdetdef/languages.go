@@ -1,23 +1,20 @@
 package langdetdef
 
 import (
+	"encoding/json"
+	"fmt"
 	"unicode"
+
 	"github.com/chrisport/go-lang-detector/langdet"
 	"github.com/chrisport/go-lang-detector/langdet/internal"
-	"log"
-	"encoding/json"
 )
 
 func init() {
-	def, err := internal.Asset("default_languages.json")
-	if err != nil {
-		log.Println("Could not initialize default languages")
-	}
-
 	lan := []langdet.Language{}
 
-	//TODO handle error case?
-	_ = json.Unmarshal(def, &lan)
+	if err := json.Unmarshal(internal.DefaultLanguageDefs, &lan); err != nil {
+		panic(fmt.Sprintf("unable to initialize default languages - corrupt embedded asset: %v", err))
+	}
 
 	for i := range lan {
 		switch lan[i].Name {
@@ -58,7 +55,7 @@ func DefaultLanguages() []langdet.LanguageComparator {
 func NewWithDefaultLanguages() langdet.Detector {
 	return langdet.Detector{Languages: DefaultLanguages(),
 		MinimumConfidence: langdet.DefaultMinimumConfidence,
-		NDepth: langdet.DEFAULT_NDEPTH}
+		NDepth:            langdet.DEFAULT_NDEPTH}
 }
 
 var defaultLanguages = make(map[string]langdet.LanguageComparator)
